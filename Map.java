@@ -4,6 +4,5 @@ public class Map {
     private Box[][] boxes;
 
     public Map(int height, int width) {
-
     }
 }
