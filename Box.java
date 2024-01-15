@@ -3,8 +3,7 @@ public class Box {
 
     private boolean revealed;
 
-    public void mark() {
-    }
+    public void mark() {}
 
     public void reveal() {
     }
