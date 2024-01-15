@@ -8,4 +8,5 @@ public class Map {
         this.width = width;
         this.boxes = new Box[height][width];
     }
+
 }
