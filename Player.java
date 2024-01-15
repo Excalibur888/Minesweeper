@@ -6,7 +6,9 @@ public class Player {
     private ArrayList<Game> games;
 
     public Player(String name){
-
+        this.name = name;
+        this.level = 0;
+        this.games = new ArrayList<Game>();
     }
 
     public String getName() {
@@ -25,14 +27,20 @@ public class Player {
         this.name = name;
     }
 
+    public void setGames(ArrayList<Game> games) {
+        this.games = games;
+    }
+
     public void computeLevel(int level) {
         this.level = level;
     }
 
-    public Game loadGame(int id){
-
+    public Game createGame(){
+        return new Game(this);
     }
-
+    public Game loadGame(int id){
+        return null;
+    }
     public void saveGame(Game game){
 
     }
