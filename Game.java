@@ -1,8 +1,10 @@
+import java.time.LocalDate;
+
 public class Game {
     private int id;
     private int score;
     private Map map;
-    private Date date;
+    private LocalDate date;
     private Timer timer;
     private Game_Difficulty difficulty;
     private Game_Status status;
@@ -23,7 +25,7 @@ public class Game {
         return score;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

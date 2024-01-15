@@ -2,6 +2,7 @@ public class Timer {
     private long startTime;
 
     public Timer() {
+
     }
 
     public long elapsedTime() {
