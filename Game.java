@@ -42,10 +42,6 @@ public class Game {
         }
     }
 
-    public Game(Map map) {
-
-    }
-
     public String getName() {
         return this.name;
     }
@@ -79,6 +75,6 @@ public class Game {
     }
 
     public void computeScore() {
-
+        this.score ++;
     }
 }

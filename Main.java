@@ -6,34 +6,63 @@ public class Main {
     public static void main(String[] args) {
         Players players = new Players("players.json");
         while (true) {
-            Player player = playerSelect(players.getPlayers());
-            if (player != null) System.out.println("Player selected : " + player.getName());
-            else {
-                player = playerCreate(players);
-                players.saveToJsonFile();
-                System.out.println("Player selected : " + player.getName());
+            Player player = null;
+            while (player == null) {
+                player = playerSelect(players.getPlayers());
+                if (player == null) {
+                    playerCreate(players);
+                    players.saveToJsonFile();
+                }
             }
-            Game game = gameSelect(player.getGames());
-            if (game != null) System.out.println("Game selected : " + game.getName());
-            else {
-                game = gameCreate(players, player);
-                players.saveToJsonFile();
-                System.out.println("Game selected : " + game.getName());
+            System.out.println("Player selected : " + player.getName());
+            Game game = null;
+            while (game == null) {
+                game = gameSelect(player.getGames());
+                if (game == null) {
+                    gameCreate(players, player);
+                    players.saveToJsonFile();
+                }
             }
+            System.out.println("Game selected : " + game.getName());
+
             Map map = game.getMap();
             game.setStatus(GameStatus.RUNNING);
+
             while (game.getStatus() == GameStatus.RUNNING) {
                 map.print();
-                System.out.println("Enter coordinates (or -1 to exit):");
                 Scanner input = new Scanner(System.in);
-                int x = input.nextInt(), y = input.nextInt();
-                if (x < 0 || y < 0){
-                    game.setStatus(GameStatus.WAITING);
-                    break;
+                String choice = "";
+                while (!choice.equals("F") || !choice.equals("R") || !choice.equals("P")) {
+                    System.out.println("Enter [F-R-P]:");
+                    choice = input.nextLine();
                 }
-                map.reveal(x, y, game);
+                int x, y;
+                if (choice.equals("P")) {
+                    System.out.println("1. Exit\n2. Continue");
+                    x = input.nextInt();
+                    if (x == 1) break;
+                    continue;
+                }
+                if (choice.equals("F")) {
+                    System.out.println("Enter coordinates:");
+                    x = input.nextInt();
+                    y = input.nextInt();
+                    map.mark(x, y);
+                }
+                if (choice.equals("R")) {
+                    System.out.println("Enter coordinates:");
+                    x = input.nextInt();
+                    y = input.nextInt();
+                    map.reveal(x, y, game);
+                }
+                game.computeScore();
                 players.saveToJsonFile();
             }
+            if (game.getStatus() != GameStatus.WAITING) {
+                map.print();
+                System.out.println("You " + game.getStatus() + "!");
+            }
+            players.saveToJsonFile();
         }
     }
 
