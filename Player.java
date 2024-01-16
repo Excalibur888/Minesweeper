@@ -36,7 +36,7 @@ public class Player {
     }
 
     public Game createGame(){
-        return new Game(this);
+        return null;
     }
     public Game loadGame(int id){
         return null;

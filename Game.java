@@ -9,15 +9,11 @@ public class Game {
     private Game_Difficulty difficulty;
     private Game_Status status;
 
-    public Game(Player player){
-
+    public Game(Game_Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 
-    public Game(Player player, Map map) {
-
-    }
-
-    public Game(Player player, Map map, Game_Difficulty difficulty){
+    public Game(Map map) {
 
     }
 
