@@ -1,9 +1,10 @@
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Players {
@@ -60,16 +61,16 @@ public class Players {
     }
 
 
-    private static void saveToJsonFile(ArrayList<Player> players, String fileName) {
+    private void saveToJsonFile(ArrayList<Player> players, String fileName) {
         try (Writer writer = new FileWriter(fileName)) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).setPrettyPrinting().create();
             gson.toJson(players, writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static ArrayList<Player> readFromJsonFile(String fileName) {
+    private ArrayList<Player> readFromJsonFile(String fileName) {
         File file = new File(fileName);
         if (file.exists() && file.length() > 0) {
             ArrayList<Player> players = new ArrayList<>();
@@ -83,5 +84,19 @@ public class Players {
             }
             return players;
         } else return new ArrayList<Player>();
+    }
+
+    public class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
+        private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        @Override
+        public JsonElement serialize(LocalDate date, Type type, JsonSerializationContext context) {
+            return new JsonPrimitive(DATE_FORMATTER.format(date));
+        }
+
+        @Override
+        public LocalDate deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+            return LocalDate.parse(element.getAsString(), DATE_FORMATTER);
+        }
     }
 }
