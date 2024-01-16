@@ -32,7 +32,7 @@ public class Main {
                 map.print();
                 Scanner input = new Scanner(System.in);
                 String choice = "";
-                while (!choice.equals("F") || !choice.equals("R") || !choice.equals("P")) {
+                while (!choice.equals("F") && !choice.equals("R") && !choice.equals("P")) {
                     System.out.println("Enter [F-R-P]:");
                     choice = input.nextLine();
                 }
