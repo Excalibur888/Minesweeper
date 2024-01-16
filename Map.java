@@ -7,8 +7,9 @@ public class Map {
 
     /**
      * Create a map with the entered size and mine count.
-     * @param height height of the map
-     * @param width width of the map
+     *
+     * @param height    height of the map
+     * @param width     width of the map
      * @param mineCount number of mines in the map
      */
     public Map(final int height, final int width, final int mineCount) {
@@ -57,6 +58,7 @@ public class Map {
 
     /**
      * Mark if the box is not revealed, unmark if it is already marked.
+     *
      * @param x position x of the box to mark/unmark.
      * @param y position y of the box to mark/unmark.
      */
@@ -76,6 +78,7 @@ public class Map {
      * Reveal the box in entered position.
      * If the box is empty, reveal adjacent boxes.
      * If the box is a mine, reveal all boxes and end the game.
+     *
      * @param x position x of the box to reveal
      * @param y position y of the box to reveal
      */
@@ -120,28 +123,59 @@ public class Map {
      * 1-8 : box revealed and indication
      */
     public void print() {
+        System.out.println();
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
                 if (this.boxes[i][j].isRevealed()) {
                     if (this.boxes[i][j] instanceof Indication) {
-                        System.out.print(((Indication) this.boxes[i][j]).getMineCount());
+                        printNumbers(((Indication) this.boxes[i][j]).getMineCount());
                     } else if (this.boxes[i][j] instanceof Mine) {
-                        System.out.print("*");
+                        System.out.print("\uD83D\uDCA3");
                     } else {
-                        System.out.print("-");
+                        System.out.print("\uD83D\uDFEB");
                     }
-                } else  if (this.boxes[i][j].isMarked()) {
-                    System.out.print("F");
+                } else if (this.boxes[i][j].isMarked()) {
+                    System.out.print("\uD83D\uDEA9");
                 } else {
-                    System.out.print("X");
+                    System.out.print("\uD83D\uDFE9");
                 }
             }
             System.out.println();
         }
     }
 
+    public void printNumbers(int i) {
+        switch (i) {
+            case 1:
+                System.out.print("1\uFE0F⃣");
+                break;
+            case 2:
+                System.out.print("2\uFE0F⃣");
+                break;
+            case 3:
+                System.out.print("3\uFE0F⃣");
+                break;
+            case 4:
+                System.out.print("4\uFE0F⃣");
+                break;
+            case 5:
+                System.out.print("5\uFE0F⃣");
+                break;
+            case 6:
+                System.out.print("6\uFE0F⃣");
+                break;
+            case 7:
+                System.out.print("7\uFE0F⃣");
+                break;
+            case 8:
+                System.out.print("8\uFE0F⃣");
+                break;
+        }
+    }
+
     /**
      * Return the height of the map.
+     *
      * @return height of the map.
      */
     public int getHeight() {
@@ -150,6 +184,7 @@ public class Map {
 
     /**
      * Return the width of the map.
+     *
      * @return width of the map.
      */
     public int getWidth() {
@@ -158,6 +193,7 @@ public class Map {
 
     /**
      * Return the box in the entered position.
+     *
      * @param x position x of the box to return.
      * @param y position y of the box to return.
      * @return box in the entered position.

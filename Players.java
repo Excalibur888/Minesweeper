@@ -29,8 +29,8 @@ public class Players {
     }
 
     public void addPlayer(Player player) {
-        for (Player p : this.players){
-            if (p.getName().equals(player.getName())){
+        for (Player p : this.players) {
+            if (p.getName().equals(player.getName())) {
                 System.out.println("Error this name is already taken.");
                 return;
             }
@@ -41,8 +41,8 @@ public class Players {
     }
 
     public void removePlayer(String name) {
-        for (Player p : this.players){
-            if (p.getName().equals(name)){
+        for (Player p : this.players) {
+            if (p.getName().equals(name)) {
                 this.players.remove(p);
                 saveToJsonFile(this.players, this.path);
                 System.out.println("Player removed.");
@@ -86,7 +86,8 @@ public class Players {
                 }.getType();
                 Gson gson = new GsonBuilder()
                         .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                        .create();                players = gson.fromJson(reader, type);
+                        .create();
+                players = gson.fromJson(reader, type);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -7,19 +7,20 @@ public class Main {
         Players players = new Players("players.json");
         Player player = playerSelect(players.getPlayers());
         if (player != null) System.out.println("Player selected : " + player.getName());
-        else{
+        else {
             player = playerCreate(players);
             System.out.println("Player selected : " + player.getName());
         }
         Game game = gameSelect(player.getGames());
         if (game != null) System.out.println("Game selected : " + game.getName());
-        else{
+        else {
             game = gameCreate(players, player);
             System.out.println("Game selected : " + game.getName());
         }
     }
-    private static Player playerSelect(ArrayList<Player> players){
-        if (players.isEmpty()){
+
+    private static Player playerSelect(ArrayList<Player> players) {
+        if (players.isEmpty()) {
             System.out.println("No players created");
             return null;
         }
@@ -28,15 +29,15 @@ public class Main {
         Scanner input = new Scanner(System.in);
         int i = 0;
         System.out.println(i++ + ".\tcreate new player");
-        for (Player player : players){
+        for (Player player : players) {
             System.out.println(i++ + ".\t" + player.getName() + "\t" + player.getLevel());
         }
         i = input.nextInt();
         if (i == 0) return null;
-        return players.get(i -1);
+        return players.get(i - 1);
     }
 
-    private static Player playerCreate(Players players){
+    private static Player playerCreate(Players players) {
         System.out.println("Chose a name for your player : ");
         Scanner input = new Scanner(System.in);
         Player player = new Player((input.nextLine()));
@@ -44,34 +45,48 @@ public class Main {
         return player;
     }
 
-    private static Game gameSelect(ArrayList<Game> games){
-        if (games.isEmpty()){
+    private static Game gameSelect(ArrayList<Game> games) {
+        if (games.isEmpty()) {
             System.out.println("No games created for this player");
             return null;
         }
         System.out.println("Select your game:\n");
-        System.out.println("id\t"+ "name\t" + "date\t" + "difficulty\t" + "score");
+        System.out.println("id\t" + "name\t" + "date\t" + "difficulty\t" + "score");
         Scanner input = new Scanner(System.in);
         int i = 0;
         System.out.println(i++ + ".\tcreate new game");
-        for (Game game : games){
+        for (Game game : games) {
             System.out.println(i++ + ".\t" + game.getName() + "\t" + game.getDate() + "\t" + game.getDifficulty() + "\t" + game.getScore());
 
         }
         i = input.nextInt();
         if (i == 0) return null;
-        return games.get(i -1);
+        return games.get(i - 1);
     }
 
-    private static Game gameCreate(Players players, Player player){
+    private static Game gameCreate(Players players, Player player) {
         System.out.println("Chose a name for the game: ");
         Scanner input = new Scanner(System.in);
         String name = input.nextLine();
         int i = 0;
-        for (Game_Difficulty difficulty : Game_Difficulty.values()){
+        for (Game_Difficulty difficulty : Game_Difficulty.values()) {
             System.out.println(++i + ".\t" + difficulty);
         }
-        Game_Difficulty difficulty = Game_Difficulty.values()[input.nextInt()-1];
-        return players.addGame(player,name, difficulty);
+        Game_Difficulty difficulty = Game_Difficulty.values()[input.nextInt() - 1];
+        return players.addGame(player, name, difficulty);
+    }
+
+    private static void testMap() {
+        Map map = new Map(10, 10, 10);
+        map.print();
+        while (true) {
+            Scanner input = new Scanner(System.in);
+            System.out.println("x : ");
+            int x = input.nextInt();
+            System.out.println("y : ");
+            int y = input.nextInt();
+            map.reveal(x, y);
+            map.print();
+        }
     }
 }

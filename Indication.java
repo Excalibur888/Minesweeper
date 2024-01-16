@@ -19,6 +19,7 @@ public class Indication extends Box {
 
     /**
      * Return the number of mines around the indicator.
+     *
      * @return number of mines around the indicator.
      */
     public int getMineCount() {
