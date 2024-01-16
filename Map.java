@@ -7,8 +7,9 @@ public class Map {
 
     /**
      * Create a map with the entered size and mine count.
-     * @param height height of the map
-     * @param width width of the map
+     *
+     * @param height    height of the map
+     * @param width     width of the map
      * @param mineCount number of mines in the map
      */
     public Map(final int height, final int width, final int mineCount) {
@@ -36,10 +37,10 @@ public class Map {
             } else {
                 this.boxes[x][y] = new Mine();
                 for (int dx = -1; dx <= 1; dx++) {
-                    for(int dy = -1; dy <= 1; dy++) {
+                    for (int dy = -1; dy <= 1; dy++) {
                         int nx = x + dx;
                         int ny = y + dy;
-                        if(nx >= 0 && nx < this.height && ny >= 0 && ny < this.width) {
+                        if (nx >= 0 && nx < this.height && ny >= 0 && ny < this.width) {
                             if (!(this.boxes[nx][ny] instanceof Mine)) {
                                 if (this.boxes[nx][ny] instanceof Indication) {
                                     ((Indication) this.boxes[nx][ny]).addMine();
@@ -57,6 +58,7 @@ public class Map {
 
     /**
      * Mark if the box is not revealed, unmark if it is already marked.
+     *
      * @param x position x of the box to mark/unmark.
      * @param y position y of the box to mark/unmark.
      */
@@ -65,7 +67,7 @@ public class Map {
             System.out.println("Invalid position");
             return;
         }
-        if (!this.boxes[x][y].isRevealed()){
+        if (!this.boxes[x][y].isRevealed()) {
             System.out.println("Box already revealed");
         } else {
             this.boxes[x][y].setMarked(!this.boxes[x][y].isMarked());
@@ -76,6 +78,7 @@ public class Map {
      * Reveal the box in entered position.
      * If the box is empty, reveal adjacent boxes.
      * If the box is a mine, reveal all boxes and end the game.
+     *
      * @param x position x of the box to reveal
      * @param y position y of the box to reveal
      */
@@ -130,7 +133,7 @@ public class Map {
                     } else {
                         System.out.print("-");
                     }
-                } else  if (this.boxes[i][j].isMarked()) {
+                } else if (this.boxes[i][j].isMarked()) {
                     System.out.print("F");
                 } else {
                     System.out.print("X");
@@ -142,6 +145,7 @@ public class Map {
 
     /**
      * Return the height of the map.
+     *
      * @return height of the map.
      */
     public int getHeight() {
@@ -150,6 +154,7 @@ public class Map {
 
     /**
      * Return the width of the map.
+     *
      * @return width of the map.
      */
     public int getWidth() {
@@ -158,6 +163,7 @@ public class Map {
 
     /**
      * Return the box in the entered position.
+     *
      * @param x position x of the box to return.
      * @param y position y of the box to return.
      * @return box in the entered position.

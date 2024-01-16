@@ -21,6 +21,7 @@ public class Box {
 
     /**
      * Return the box's mark status.
+     *
      * @return true if the box is marked, false otherwise.
      */
     public boolean isMarked() {
@@ -29,6 +30,7 @@ public class Box {
 
     /**
      * Return the box's reveal status.
+     *
      * @return true if the box is revealed, false otherwise.
      */
     public boolean isRevealed() {
@@ -37,6 +39,7 @@ public class Box {
 
     /**
      * Set the box's mark status.
+     *
      * @param marked true if the box is marked, false otherwise.
      */
     public void setMarked(final boolean marked) {
