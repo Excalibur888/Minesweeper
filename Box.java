@@ -1,9 +1,11 @@
 public class Box {
+
     private boolean marked;
+
     private boolean revealed;
 
     /**
-     * Create a box with default values
+     * Create a box with default values.
      */
     public Box() {
         this.marked = false;
@@ -11,33 +13,33 @@ public class Box {
     }
 
     /**
-     * set the box as revealed
+     * set the box as revealed.
      */
     public void reveal() {
         this.revealed = true;
     }
 
     /**
-     * Return the box's mark status
-     * @return true if the box is marked, false otherwise
+     * Return the box's mark status.
+     * @return true if the box is marked, false otherwise.
      */
     public boolean isMarked() {
         return this.marked;
     }
 
     /**
-     * Return the box's reveal status
-     * @return true if the box is revealed, false otherwise
+     * Return the box's reveal status.
+     * @return true if the box is revealed, false otherwise.
      */
     public boolean isRevealed() {
         return this.revealed;
     }
 
     /**
-     * Set the box's mark status
-     * @param marked true if the box is marked, false otherwise
+     * Set the box's mark status.
+     * @param marked true if the box is marked, false otherwise.
      */
-    public void setMarked(boolean marked) {
+    public void setMarked(final boolean marked) {
         this.marked = marked;
     }
 }
