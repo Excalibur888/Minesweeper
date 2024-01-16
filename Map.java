@@ -112,16 +112,30 @@ public class Map {
                 }
             }
 
-            //TODO : check if the game is won
-            // Check if the game is won.
-            // Win condition : all boxes revealed except mines
-            /*int count = 0;
+            // Win condition : all boxes revealed except mines.
+            int count = 0;
             int minesCount = 0;
+            //Count the number of boxes on the map.
             for (int i = 0; i < this.height; i++) {
                 for (int j = 0; j < this.width; j++) {
-
+                    count++;
+                    if (this.boxes[i][j].getType() == BoxType.MINE) {
+                        minesCount++;
+                    }
                 }
-            }*/
+            }
+            //Count the number of boxes not revealed.
+            for(int i = 0; i < this.height; i++) {
+                for(int j = 0; j < this.width; j++) {
+                    if(!this.boxes[i][j].isRevealed()) {
+                        count++;
+                    }
+                }
+            }
+            //If the number of boxes not revealed is equal to the number of mines, the player win.
+            if(count == minesCount) {
+                game.setStatus(GameStatus.WIN);
+            }
         }
     }
 

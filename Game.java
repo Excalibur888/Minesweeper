@@ -35,9 +35,9 @@ public class Game {
                 System.out.println("Enter the map size :\n");
                 Scanner input = new Scanner(System.in);
                 int size = input.nextInt();
-                this.map = new Map(size, size, this.minesCount);
                 System.out.println("Home much mines do you want ?\n");
                 this.minesCount = input.nextInt();
+                this.map = new Map(size, size, this.minesCount);
                 break;
         }
     }
