@@ -46,10 +46,10 @@ public class Box {
     /**
      * Set the box's mark status.
      *
-     * @param marked true if the box is marked, false otherwise.
+     * @param toMark true if the box is marked, false otherwise.
      */
-    public void setMarked(final boolean marked) {
-        this.marked = marked;
+    public void setMarked(final boolean toMark) {
+        this.marked = toMark;
     }
 
     /**

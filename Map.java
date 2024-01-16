@@ -65,7 +65,7 @@ public class Map {
             System.out.println("Invalid position");
             return;
         }
-        if (!this.boxes[x][y].isRevealed()) {
+        if (this.boxes[x][y].isRevealed()) {
             System.out.println("Box already revealed");
         } else {
             this.boxes[x][y].setMarked(!this.boxes[x][y].isMarked());
