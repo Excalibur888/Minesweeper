@@ -52,6 +52,13 @@ public class Players {
         System.out.println("Error this player does not exist.");
     }
 
+    public Game addGame(Player player, String name, Game_Difficulty difficulty) {
+        Game game = player.createGame(name, difficulty);
+        saveToJsonFile(this.players, this.path);
+        System.out.println("Game added.");
+        return game;
+    }
+
     public ArrayList<Player> getPlayers() {
         return this.players;
     }

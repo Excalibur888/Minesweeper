@@ -1,7 +1,8 @@
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Game {
-    private int id;
+    private String name;
     private int score;
     private Map map;
     private LocalDate date;
@@ -9,28 +10,36 @@ public class Game {
     private Game_Difficulty difficulty;
     private Game_Status status;
 
-    public Game(Game_Difficulty difficulty) {
+    public Game(String name, Game_Difficulty difficulty) {
+        this.name = name;
+        this.score = 0;
         this.difficulty = difficulty;
+        this.date = LocalDate.now();
+        this.status = Game_Status.WAITING;
     }
 
     public Game(Map map) {
 
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public int getScore() {
-        return score;
+        return this.score;
     }
 
     public LocalDate getDate() {
-        return date;
+        return this.date;
     }
 
     public Game_Difficulty getDifficulty() {
-        return difficulty;
+        return this.difficulty;
     }
 
     public Game_Status getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setDifficulty(Game_Difficulty difficulty) {

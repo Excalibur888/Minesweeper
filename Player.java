@@ -35,8 +35,11 @@ public class Player {
         this.level = level;
     }
 
-    public Game createGame(){
-        return null;
+    public Game createGame(String name, Game_Difficulty difficulty){
+        Game game = new Game(name, difficulty);
+        games.add(game);
+        System.out.println("Game created.");
+        return game;
     }
     public Game loadGame(int id){
         return null;
