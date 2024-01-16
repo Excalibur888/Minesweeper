@@ -77,15 +77,15 @@ public class Map {
      * If the box is empty, reveal adjacent boxes.
      * If the box is a mine, reveal all boxes and end the game.
      *
-     * @param x position x of the box to reveal
-     * @param y position y of the box to reveal
+     * @param x    position x of the box to reveal
+     * @param y    position y of the box to reveal
+     * @param game game to check if the player win
      */
     public void reveal(final int x, final int y, final Game game) {
         // Invalid position if the box is outside the map
         if (x < 0 || x >= this.height || y < 0 || y >= this.width) {
             System.out.println("Error : Invalid position.");
-        }
-        else {
+        } else {
             //reveal the box
             this.boxes[x][y].reveal();
             //check if the player win
@@ -147,10 +147,11 @@ public class Map {
     }
 
     /**
-     * Print the number with emotes in the console.
+     * Print the number (between 1 and 8) with emotes in the console.
+     *
      * @param i number to print
      */
-    public void printNumbers(int i) {
+    public void printNumbers(final int i) {
         switch (i) {
             case 1:
                 System.out.print("1️⃣");
@@ -176,9 +177,17 @@ public class Map {
             case 8:
                 System.out.print("8️⃣");
                 break;
+            default:
+                System.out.print("❓");
+                break;
         }
     }
 
+    /**
+     * Check if the player win.
+     *
+     * @param game game to check if the player win
+     */
     public void checkWin(final Game game) {
         // Win condition : all boxes revealed except mines.
         int count = 0;
@@ -192,15 +201,15 @@ public class Map {
             }
         }
         //Count the number of boxes not revealed.
-        for(int i = 0; i < this.height; i++) {
-            for(int j = 0; j < this.width; j++) {
-                if(!this.boxes[i][j].isRevealed()) {
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
+                if (!this.boxes[i][j].isRevealed()) {
                     count++;
                 }
             }
         }
         //If the number of boxes not revealed is equal to the number of mines, the player win.
-        if(count == minesCount) {
+        if (count == minesCount) {
             game.setStatus(GameStatus.WIN);
         }
     }
