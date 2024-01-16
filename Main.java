@@ -5,29 +5,35 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Players players = new Players("players.json");
-        Player player = playerSelect(players.getPlayers());
-        if (player != null) System.out.println("Player selected : " + player.getName());
-        else {
-            player = playerCreate(players);
-            players.saveToJsonFile();
-            System.out.println("Player selected : " + player.getName());
-        }
-        Game game = gameSelect(player.getGames());
-        if (game != null) System.out.println("Game selected : " + game.getName());
-        else {
-            game = gameCreate(players, player);
-            players.saveToJsonFile();
-            System.out.println("Game selected : " + game.getName());
-        }
-        Map map = game.getMap();
         while (true) {
-            map.print();
-            System.out.println("Enter coordinates (or -1 to exit):");
-            Scanner input = new Scanner(System.in);
-            int x = input.nextInt(), y = input.nextInt();
-            if (x < 0 || y < 0) break;
-            map.reveal(x, y);
-            players.saveToJsonFile();
+            Player player = playerSelect(players.getPlayers());
+            if (player != null) System.out.println("Player selected : " + player.getName());
+            else {
+                player = playerCreate(players);
+                players.saveToJsonFile();
+                System.out.println("Player selected : " + player.getName());
+            }
+            Game game = gameSelect(player.getGames());
+            if (game != null) System.out.println("Game selected : " + game.getName());
+            else {
+                game = gameCreate(players, player);
+                players.saveToJsonFile();
+                System.out.println("Game selected : " + game.getName());
+            }
+            Map map = game.getMap();
+            game.setStatus(GameStatus.RUNNING);
+            while (game.getStatus() == GameStatus.RUNNING) {
+                map.print();
+                System.out.println("Enter coordinates (or -1 to exit):");
+                Scanner input = new Scanner(System.in);
+                int x = input.nextInt(), y = input.nextInt();
+                if (x < 0 || y < 0){
+                    game.setStatus(GameStatus.WAITING);
+                    break;
+                }
+                map.reveal(x, y, game);
+                players.saveToJsonFile();
+            }
         }
     }
 

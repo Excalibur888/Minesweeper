@@ -78,10 +78,6 @@ public class Game {
         this.status = status;
     }
 
-    public void addFlag(int x, int y) {
-
-    }
-
     public void computeScore() {
 
     }
