@@ -4,12 +4,18 @@ public class Box {
 
     private boolean revealed;
 
+    private int mineCount;
+
+    private BoxType type;
+
     /**
      * Create a box with default values.
      */
     public Box() {
         this.marked = false;
         this.revealed = false;
+        this.mineCount = 0;
+        this.type = BoxType.EMPTY;
     }
 
     /**
@@ -44,5 +50,37 @@ public class Box {
      */
     public void setMarked(final boolean marked) {
         this.marked = marked;
+    }
+
+    /**
+     * Add 1 mine to the indicator.
+     */
+    public void addMine() {
+        this.mineCount++;
+    }
+
+    /**
+     * Return the number of mines around the indicator.
+     *
+     * @return number of mines around the indicator.
+     */
+    public int getMineCount() {
+        return this.mineCount;
+    }
+
+    /**
+     * Return the box's type.
+     * @return box's type.
+     */
+    public BoxType getType() {
+        return this.type;
+    }
+
+    /**
+     * Set the box's type.
+     * @param type box's type.
+     */
+    public void setType(final BoxType type) {
+        this.type = type;
     }
 }

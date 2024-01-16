@@ -1,9 +1,9 @@
 public class Map {
-    private int height;
+    private final int height;
 
-    private int width;
+    private final int width;
 
-    private Box[][] boxes;
+    private final Box[][] boxes;
 
     /**
      * Create a map with the entered size and mine count.
@@ -32,22 +32,20 @@ public class Map {
         for (int i = 0; i < mineCount; i++) {
             int x = (int) (Math.random() * height);
             int y = (int) (Math.random() * width);
-            if (this.boxes[x][y] instanceof Mine) {
+            if (this.boxes[x][y].getType() == BoxType.MINE) {
                 i--;
             } else {
-                this.boxes[x][y] = new Mine();
+                this.boxes[x][y].setType(BoxType.MINE);
                 for (int dx = -1; dx <= 1; dx++) {
                     for (int dy = -1; dy <= 1; dy++) {
                         int nx = x + dx;
                         int ny = y + dy;
                         if (nx >= 0 && nx < this.height && ny >= 0 && ny < this.width) {
-                            if (!(this.boxes[nx][ny] instanceof Mine)) {
-                                if (this.boxes[nx][ny] instanceof Indication) {
-                                    ((Indication) this.boxes[nx][ny]).addMine();
-                                } else if (!(this.boxes[nx][ny] instanceof Mine)) {
-                                    this.boxes[nx][ny] = new Indication();
-                                    ((Indication) this.boxes[nx][ny]).addMine();
-                                }
+                            if (this.boxes[nx][ny].getType() != BoxType.INDICATION) {
+                                this.boxes[nx][ny].addMine();
+                            } else if (this.boxes[nx][ny].getType() == BoxType.EMPTY) {
+                                this.boxes[nx][ny].setType(BoxType.INDICATION);
+                                this.boxes[nx][ny].addMine();
                             }
                         }
                     }
@@ -82,31 +80,33 @@ public class Map {
      * @param x position x of the box to reveal
      * @param y position y of the box to reveal
      */
-    public void reveal(final int x, final int y) {
+    public void reveal(final int x, final int y, Game game) {
         // Invalid position if the box is outside the map
         if (x < 0 || x >= this.height || y < 0 || y >= this.width) {
-            System.out.println("Invalid position.");
-            return;
+            System.out.println("Error : Invalid position.");
         }
-        //reveal the box
-        this.boxes[x][y].reveal();
-        // Game over if the box is a mine
-        if (this.boxes[x][y] instanceof Mine) {
-            // Reveal all boxes if the box is a mine
-            for (int i = 0; i < this.height; i++) {
-                for (int j = 0; j < this.width; j++) {
-                    this.boxes[i][j].reveal();
+        else {
+            //reveal the box
+            this.boxes[x][y].reveal();
+            // Game over if the box is a mine
+            if (this.boxes[x][y].getType() == BoxType.MINE) {
+                // Reveal all boxes if the box is a mine
+                for (int i = 0; i < this.height; i++) {
+                    for (int j = 0; j < this.width; j++) {
+                        this.boxes[i][j].reveal();
+                    }
                 }
-            }
-        } else if (!(this.boxes[x][y] instanceof Indication)) {
-            // Reveal adjacent boxes if the box is empty
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dy = -1; dy <= 1; dy++) {
-                    int nx = x + dx;
-                    int ny = y + dy;
-                    if (nx >= 0 && nx < this.height && ny >= 0 && ny < this.width) {
-                        if (!this.boxes[nx][ny].isRevealed()) {
-                            reveal(nx, ny);
+                game.setStatus(GameStatus.LOOSE);
+            } else if (this.boxes[x][y].getType() == BoxType.EMPTY) {
+                // Reveal adjacent boxes if the box is empty
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dy = -1; dy <= 1; dy++) {
+                        int nx = x + dx;
+                        int ny = y + dy;
+                        if (nx >= 0 && nx < this.height && ny >= 0 && ny < this.width) {
+                            if (!this.boxes[nx][ny].isRevealed()) {
+                                reveal(nx, ny, game);
+                            }
                         }
                     }
                 }
@@ -127,9 +127,9 @@ public class Map {
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
                 if (this.boxes[i][j].isRevealed()) {
-                    if (this.boxes[i][j] instanceof Indication) {
-                        printNumbers(((Indication) this.boxes[i][j]).getMineCount());
-                    } else if (this.boxes[i][j] instanceof Mine) {
+                    if (this.boxes[i][j].getType() == BoxType.INDICATION) {
+                        printNumbers((this.boxes[i][j]).getMineCount());
+                    } else if (this.boxes[i][j].getType() == BoxType.MINE) {
                         System.out.print("\uD83D\uDCA3");
                     } else {
                         System.out.print("\uD83D\uDFEB");
@@ -151,58 +151,29 @@ public class Map {
     public void printNumbers(int i) {
         switch (i) {
             case 1:
-                System.out.print("1\uFE0F⃣");
+                System.out.print("1️⃣");
                 break;
             case 2:
-                System.out.print("2\uFE0F⃣");
+                System.out.print("2️⃣");
                 break;
             case 3:
-                System.out.print("3\uFE0F⃣");
+                System.out.print("3️⃣");
                 break;
             case 4:
-                System.out.print("4\uFE0F⃣");
+                System.out.print("4️⃣");
                 break;
             case 5:
-                System.out.print("5\uFE0F⃣");
+                System.out.print("5️⃣");
                 break;
             case 6:
-                System.out.print("6\uFE0F⃣");
+                System.out.print("6️⃣");
                 break;
             case 7:
-                System.out.print("7\uFE0F⃣");
+                System.out.print("7️⃣");
                 break;
             case 8:
-                System.out.print("8\uFE0F⃣");
+                System.out.print("8️⃣");
                 break;
         }
-    }
-
-    /**
-     * Return the height of the map.
-     *
-     * @return height of the map.
-     */
-    public int getHeight() {
-        return this.height;
-    }
-
-    /**
-     * Return the width of the map.
-     *
-     * @return width of the map.
-     */
-    public int getWidth() {
-        return this.width;
-    }
-
-    /**
-     * Return the box in the entered position.
-     *
-     * @param x position x of the box to return.
-     * @param y position y of the box to return.
-     * @return box in the entered position.
-     */
-    public Box getBox(final int x, final int y) {
-        return this.boxes[x][y];
     }
 }
