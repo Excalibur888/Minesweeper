@@ -168,7 +168,7 @@ public class Map {
      * @param y position y of the box to return.
      * @return box in the entered position.
      */
-    public Box getBox(int x, int y) {
+    public Box getBox(final int x, final int y) {
         return this.boxes[x][y];
     }
 }
