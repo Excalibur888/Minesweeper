@@ -5,48 +5,86 @@ public class Player {
     private int level;
     private ArrayList<Game> games;
 
-    public Player(String name) {
+    public Player(final String name) {
         this.name = name;
         this.level = 0;
         this.games = new ArrayList<Game>();
     }
 
+    /**
+     * return the player's name.
+     * @return player's name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Return the player's level.
+     * @return player's level.
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * Return the player's games.
+     * @return player's games.
+     */
     public ArrayList<Game> getGames() {
         return games;
     }
 
-    public void setName(String name) {
+    /**
+     * Set the player's name.
+     * @param name player's name.
+     */
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public void setGames(ArrayList<Game> games) {
+    /**
+     * Set game list to the player.
+     * @param games game list to set.
+     */
+    public void setGames(final ArrayList<Game> games) {
         this.games = games;
     }
 
-    public void computeLevel(int level) {
+    /**
+     * Change the player's level.
+     * @param level player's level to set.
+     */
+    public void computeLevel(final int level) {
         this.level = level;
     }
 
-    public Game createGame(String name, Game_Difficulty difficulty) {
+    /**
+     * Create a new game.
+     * @param name name of the game.
+     * @param difficulty difficulty of the game.
+     * @return the created game.
+     */
+    public Game createGame(final String name, final GameDifficulty difficulty) {
         Game game = new Game(name, difficulty);
         games.add(game);
         System.out.println("Game created.");
         return game;
     }
 
-    public Game loadGame(int id) {
+    /**
+     * Load a previous game from the player.
+     * @param id game id from the game to load.
+     */
+    public Game loadGame(final int id) {
         return null;
     }
 
-    public void saveGame(Game game) {
+    /**
+     * Save a game to the player.
+     * @param game game to save.
+     */
+    public void saveGame(final Game game) {
 
     }
 }

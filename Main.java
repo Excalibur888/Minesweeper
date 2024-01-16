@@ -69,10 +69,10 @@ public class Main {
         Scanner input = new Scanner(System.in);
         String name = input.nextLine();
         int i = 0;
-        for (Game_Difficulty difficulty : Game_Difficulty.values()) {
+        for (GameDifficulty difficulty : GameDifficulty.values()) {
             System.out.println(++i + ".\t" + difficulty);
         }
-        Game_Difficulty difficulty = Game_Difficulty.values()[input.nextInt() - 1];
+        GameDifficulty difficulty = GameDifficulty.values()[input.nextInt() - 1];
         return players.addGame(player, name, difficulty);
     }
 
