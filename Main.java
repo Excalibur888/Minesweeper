@@ -37,7 +37,7 @@ public class Main {
     }
 
     private static Player playerCreate(Players players){
-        System.out.println("Chose a name : ");
+        System.out.println("Chose a name for your player : ");
         Scanner input = new Scanner(System.in);
         Player player = new Player((input.nextLine()));
         players.addPlayer(player);
@@ -64,7 +64,7 @@ public class Main {
     }
 
     private static Game gameCreate(Players players, Player player){
-        System.out.println("Chose a name : ");
+        System.out.println("Chose a name for the game: ");
         Scanner input = new Scanner(System.in);
         String name = input.nextLine();
         int i = 0;
