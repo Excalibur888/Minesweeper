@@ -1,2 +1,2 @@
-public class Mine extends Box{
+public class Mine extends Box {
 }
