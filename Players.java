@@ -77,8 +77,9 @@ public class Players {
             try (Reader reader = new FileReader(fileName)) {
                 Type type = new TypeToken<ArrayList<Player>>() {
                 }.getType();
-                Gson gson = new Gson();
-                players = gson.fromJson(reader, type);
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                        .create();                players = gson.fromJson(reader, type);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -86,7 +87,7 @@ public class Players {
         } else return new ArrayList<Player>();
     }
 
-    public class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
+    public static class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
         private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         @Override
