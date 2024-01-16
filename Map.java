@@ -25,7 +25,7 @@ public class Map {
         }
         // Check if mine count is possible for the size of the map
         if (mineCount > height * width) {
-            System.out.println("Too many mines");
+            System.out.println("Error : Too many mines");
             return;
         }
         // Generate mines at random position and indications around them
@@ -41,7 +41,7 @@ public class Map {
                         int nx = x + dx;
                         int ny = y + dy;
                         if (nx >= 0 && nx < this.height && ny >= 0 && ny < this.width) {
-                            if (this.boxes[nx][ny].getType() != BoxType.INDICATION) {
+                            if (this.boxes[nx][ny].getType() == BoxType.INDICATION) {
                                 this.boxes[nx][ny].addMine();
                             } else if (this.boxes[nx][ny].getType() == BoxType.EMPTY) {
                                 this.boxes[nx][ny].setType(BoxType.INDICATION);
@@ -111,6 +111,9 @@ public class Map {
                     }
                 }
             }
+
+            // Check if the game is won
+
         }
     }
 
