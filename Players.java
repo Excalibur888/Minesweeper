@@ -20,7 +20,7 @@ public class Players {
                 this.players = new ArrayList<>();
             } else {
                 System.out.println("Player file already exists.");
-                this.players = readFromJsonFile(path);
+                this.players = readFromJsonFile();
             }
         } catch (IOException e) {
             System.out.println("Error opening the file.");
@@ -36,7 +36,6 @@ public class Players {
             }
         }
         this.players.add(player);
-        saveToJsonFile(this.players, this.path);
         System.out.println("Player added.");
     }
 
@@ -44,19 +43,11 @@ public class Players {
         for (Player p : this.players) {
             if (p.getName().equals(name)) {
                 this.players.remove(p);
-                saveToJsonFile(this.players, this.path);
                 System.out.println("Player removed.");
                 return;
             }
         }
         System.out.println("Error this player does not exist.");
-    }
-
-    public Game addGame(Player player, String name, Game_Difficulty difficulty) {
-        Game game = player.createGame(name, difficulty);
-        saveToJsonFile(this.players, this.path);
-        System.out.println("Game added.");
-        return game;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -68,20 +59,20 @@ public class Players {
     }
 
 
-    private void saveToJsonFile(ArrayList<Player> players, String fileName) {
-        try (Writer writer = new FileWriter(fileName)) {
+    public void saveToJsonFile() {
+        try (Writer writer = new FileWriter(this.path)) {
             Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).setPrettyPrinting().create();
-            gson.toJson(players, writer);
+            gson.toJson(this.players, writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private ArrayList<Player> readFromJsonFile(String fileName) {
-        File file = new File(fileName);
+    private ArrayList<Player> readFromJsonFile() {
+        File file = new File(this.path);
         if (file.exists() && file.length() > 0) {
             ArrayList<Player> players = new ArrayList<>();
-            try (Reader reader = new FileReader(fileName)) {
+            try (Reader reader = new FileReader(this.path)) {
                 Type type = new TypeToken<ArrayList<Player>>() {
                 }.getType();
                 Gson gson = new GsonBuilder()

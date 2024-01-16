@@ -1,4 +1,4 @@
-public enum Game_Status {
+public enum GameStatus {
     WAITING,
     RUNNING,
     LOOSE,

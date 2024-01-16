@@ -9,27 +9,27 @@ public class Game {
     private LocalDate date;
     private Timer timer;
     private GameDifficulty difficulty;
-    private Game_Status status;
+    private GameStatus status;
 
     public Game(String name, GameDifficulty difficulty) {
         this.name = name;
         this.score = 0;
         this.difficulty = difficulty;
         this.date = LocalDate.now();
-        this.status = Game_Status.WAITING;
+        this.status = GameStatus.WAITING;
 
         switch (this.difficulty) {
             case GameDifficulty.EASY:
-                this.map = new Map(10, 10, this.minesCount);
                 this.minesCount = 10;
+                this.map = new Map(10, 10, this.minesCount);
                 break;
             case GameDifficulty.NORMAL:
-                this.map = new Map(20, 20, this.minesCount);
                 this.minesCount = 40;
+                this.map = new Map(20, 20, this.minesCount);
                 break;
             case GameDifficulty.HARD:
-                this.map = new Map(30, 30, this.minesCount);
                 this.minesCount = 99;
+                this.map = new Map(30, 30, this.minesCount);
                 break;
             case GameDifficulty.PERSONALISED:
                 System.out.println("Enter the map size :\n");
@@ -58,15 +58,23 @@ public class Game {
         return this.date;
     }
 
+    public Map getMap() {
+        return this.map;
+    }
+
+    public Timer getTimer() {
+        return this.timer;
+    }
+
     public GameDifficulty getDifficulty() {
         return this.difficulty;
     }
 
-    public Game_Status getStatus() {
+    public GameStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(Game_Status status) {
+    public void setStatus(GameStatus status) {
         this.status = status;
     }
 

@@ -9,13 +9,25 @@ public class Main {
         if (player != null) System.out.println("Player selected : " + player.getName());
         else {
             player = playerCreate(players);
+            players.saveToJsonFile();
             System.out.println("Player selected : " + player.getName());
         }
         Game game = gameSelect(player.getGames());
         if (game != null) System.out.println("Game selected : " + game.getName());
         else {
             game = gameCreate(players, player);
+            players.saveToJsonFile();
             System.out.println("Game selected : " + game.getName());
+        }
+        Map map = game.getMap();
+        while (true) {
+            map.print();
+            System.out.println("Enter coordinates (or -1 to exit):");
+            Scanner input = new Scanner(System.in);
+            int x = input.nextInt(), y = input.nextInt();
+            if (x < 0 || y < 0) break;
+            map.reveal(x, y);
+            players.saveToJsonFile();
         }
     }
 
@@ -73,18 +85,6 @@ public class Main {
             System.out.println(++i + ".\t" + difficulty);
         }
         GameDifficulty difficulty = GameDifficulty.values()[input.nextInt() - 1];
-        return players.addGame(player, name, difficulty);
-    }
-
-    public static void testMap() {
-        Map map = new Map(10, 10, 10);
-        while (true) {
-            map.print();
-            System.out.println("Enter x and y : ");
-            Scanner input = new Scanner(System.in);
-            int x = input.nextInt();
-            int y = input.nextInt();
-            map.reveal(x, y);
-        }
+        return player.createGame(name, difficulty);
     }
 }
