@@ -4,7 +4,7 @@ public class Box {
 
     private boolean revealed;
 
-    private int mineCount;
+    private int adjacentMineCount;
 
     private BoxType type;
 
@@ -14,7 +14,7 @@ public class Box {
     public Box() {
         this.marked = false;
         this.revealed = false;
-        this.mineCount = 0;
+        this.adjacentMineCount = 0;
         this.type = BoxType.EMPTY;
     }
 
@@ -56,7 +56,7 @@ public class Box {
      * Add 1 mine to the indicator.
      */
     public void addMine() {
-        this.mineCount++;
+        this.adjacentMineCount++;
     }
 
     /**
@@ -64,8 +64,8 @@ public class Box {
      *
      * @return number of mines around the indicator.
      */
-    public int getMineCount() {
-        return this.mineCount;
+    public int getAdjacentMineCount() {
+        return this.adjacentMineCount;
     }
 
     /**

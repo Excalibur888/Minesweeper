@@ -112,8 +112,16 @@ public class Map {
                 }
             }
 
-            // Check if the game is won
+            //TODO : check if the game is won
+            // Check if the game is won.
+            // Win condition : all boxes revealed except mines
+            /*int count = 0;
+            int minesCount = 0;
+            for (int i = 0; i < this.height; i++) {
+                for (int j = 0; j < this.width; j++) {
 
+                }
+            }*/
         }
     }
 
@@ -131,7 +139,7 @@ public class Map {
             for (int j = 0; j < this.width; j++) {
                 if (this.boxes[i][j].isRevealed()) {
                     if (this.boxes[i][j].getType() == BoxType.INDICATION) {
-                        printNumbers((this.boxes[i][j]).getMineCount());
+                        printNumbers((this.boxes[i][j]).getAdjacentMineCount());
                     } else if (this.boxes[i][j].getType() == BoxType.MINE) {
                         System.out.print("\uD83D\uDCA3");
                     } else {
