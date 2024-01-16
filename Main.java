@@ -75,18 +75,4 @@ public class Main {
         Game_Difficulty difficulty = Game_Difficulty.values()[input.nextInt() - 1];
         return players.addGame(player, name, difficulty);
     }
-
-    private static void testMap() {
-        Map map = new Map(10, 10, 10);
-        map.print();
-        while (true) {
-            Scanner input = new Scanner(System.in);
-            System.out.println("x : ");
-            int x = input.nextInt();
-            System.out.println("y : ");
-            int y = input.nextInt();
-            map.reveal(x, y);
-            map.print();
-        }
-    }
 }
