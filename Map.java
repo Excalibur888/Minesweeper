@@ -144,6 +144,10 @@ public class Map {
         }
     }
 
+    /**
+     * Print the number with emotes in the console.
+     * @param i number to print
+     */
     public void printNumbers(int i) {
         switch (i) {
             case 1:
