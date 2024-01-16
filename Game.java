@@ -17,6 +17,7 @@ public class Game {
         this.difficulty = difficulty;
         this.date = LocalDate.now();
         this.status = GameStatus.WAITING;
+        this.timer = new Timer();
 
         switch (this.difficulty) {
             case GameDifficulty.EASY:
@@ -75,6 +76,6 @@ public class Game {
     }
 
     public void computeScore() {
-        this.score ++;
+        this.score++;
     }
 }

@@ -1,39 +1,32 @@
 public class Timer {
+    private long elapsedTime;
     private long startTime;
 
     public Timer() {
-
+        this.elapsedTime = 0;
     }
 
-    /**
-     * Get the elapsed time in milliseconds.
-     * @return The elapsed time in milliseconds.
-     */
-    public long elapsedTime() {
-        return 0;
+    public void start() {
+        this.startTime = System.currentTimeMillis();
     }
 
-    /**
-     * Get the elapsed time in seconds.
-     * @return The elapsed time in seconds.
-     */
+    public void stop() {
+        this.elapsedTime += System.currentTimeMillis() - startTime;
+    }
+
+    public long elapsed() {
+        return ((System.currentTimeMillis() - this.startTime) + elapsedTime) / 1000;
+    }
+
     public long elapsedSeconds() {
-        return 0;
+        return this.elapsed() % 60;
     }
 
-    /**
-     * Display the elapsed time in seconds.
-     * @return The elapsed time in seconds.
-     */
-    public long displaySeconds() {
-        return 0;
+    public long elapsedMinutes() {
+        return this.elapsed() / 60;
     }
 
-    /**
-     * Display the elapsed time in minutes.
-     * @return The elapsed time in minutes.
-     */
-    public long displayMinutes() {
-        return 0;
+    public void display() {
+        System.out.format("%d : %02d\t", elapsedMinutes(), elapsedSeconds());
     }
 }

@@ -26,42 +26,51 @@ public class Main {
             System.out.println("Game selected : " + game.getName());
 
             Map map = game.getMap();
-            game.setStatus(GameStatus.RUNNING);
-
-            while (game.getStatus() == GameStatus.RUNNING) {
-                map.print();
-                Scanner input = new Scanner(System.in);
-                String choice = "";
-                while (!choice.equals("F") && !choice.equals("R") && !choice.equals("P")) {
-                    System.out.println("Enter [F-R-P]:");
-                    choice = input.nextLine();
+            Timer timer = game.getTimer();
+            if (game.getStatus() == GameStatus.WAITING) {
+                game.setStatus(GameStatus.RUNNING);
+                timer.start();
+                while (game.getStatus() == GameStatus.RUNNING) {
+                    map.print();
+                    Scanner input = new Scanner(System.in);
+                    String choice = "";
+                    while (!choice.equals("F") && !choice.equals("R") && !choice.equals("P")) {
+                        timer.display();
+                        System.out.println("Enter [F-R-P]:");
+                        choice = input.nextLine();
+                    }
+                    int x, y;
+                    if (choice.equals("P")) {
+                        game.setStatus(GameStatus.WAITING);
+                        System.out.println("1. Exit\n2. Continue");
+                        x = input.nextInt();
+                        if (x == 1) break;
+                        game.setStatus(GameStatus.RUNNING);
+                        timer.start();
+                        continue;
+                    }
+                    if (choice.equals("F")) {
+                        System.out.println("Enter coordinates:");
+                        x = input.nextInt();
+                        y = input.nextInt();
+                        map.mark(x, y);
+                    }
+                    if (choice.equals("R")) {
+                        System.out.println("Enter coordinates:");
+                        x = input.nextInt();
+                        y = input.nextInt();
+                        map.reveal(x, y, game);
+                    }
+                    game.computeScore();
+                    players.saveToJsonFile();
                 }
-                int x, y;
-                if (choice.equals("P")) {
-                    System.out.println("1. Exit\n2. Continue");
-                    x = input.nextInt();
-                    if (x == 1) break;
-                    continue;
-                }
-                if (choice.equals("F")) {
-                    System.out.println("Enter coordinates:");
-                    x = input.nextInt();
-                    y = input.nextInt();
-                    map.mark(x, y);
-                }
-                if (choice.equals("R")) {
-                    System.out.println("Enter coordinates:");
-                    x = input.nextInt();
-                    y = input.nextInt();
-                    map.reveal(x, y, game);
-                }
-                game.computeScore();
-                players.saveToJsonFile();
             }
+            timer.stop();
             if (game.getStatus() != GameStatus.WAITING) {
                 map.print();
                 System.out.println("You " + game.getStatus() + "!");
-            }
+            } else System.out.println("Game saved.");
+
             players.saveToJsonFile();
         }
     }
@@ -84,12 +93,11 @@ public class Main {
         return players.get(i - 1);
     }
 
-    private static Player playerCreate(Players players) {
+    private static void playerCreate(Players players) {
         System.out.println("Chose a name for your player : ");
         Scanner input = new Scanner(System.in);
         Player player = new Player((input.nextLine()));
         players.addPlayer(player);
-        return player;
     }
 
     private static Game gameSelect(ArrayList<Game> games) {
@@ -111,7 +119,7 @@ public class Main {
         return games.get(i - 1);
     }
 
-    private static Game gameCreate(Players players, Player player) {
+    private static void gameCreate(Players players, Player player) {
         System.out.println("Chose a name for the game: ");
         Scanner input = new Scanner(System.in);
         String name = input.nextLine();
@@ -120,6 +128,6 @@ public class Main {
             System.out.println(++i + ".\t" + difficulty);
         }
         GameDifficulty difficulty = GameDifficulty.values()[input.nextInt() - 1];
-        return player.createGame(name, difficulty);
+        player.createGame(name, difficulty);
     }
 }
