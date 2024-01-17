@@ -54,6 +54,18 @@ public class Map {
         }
     }
 
+    public int getHeight() {
+        return this.height;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public Box getBoxes(int x, int y) {
+        return boxes[x][y];
+    }
+
     /**
      * Mark if the box is not revealed, unmark if it is already marked.
      *
