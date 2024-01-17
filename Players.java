@@ -1,18 +1,14 @@
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.*;
-import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Players {
-    private String path;
+    DataSavingUtils save;
+
     private ArrayList<Player> players;
 
     public Players(String path) {
-        this.path = path;
+        save = new DataSavingUtils(path);
         File file = new File(path);
         try {
             if (file.createNewFile()) {
@@ -20,7 +16,7 @@ public class Players {
                 this.players = new ArrayList<>();
             } else {
                 System.out.println("Player file already exists.");
-                this.players = readFromJsonFile();
+                this.players = save.readFromJsonFile();
             }
         } catch (IOException e) {
             System.out.println("Error opening the file.");
@@ -54,49 +50,7 @@ public class Players {
         return this.players;
     }
 
-    public int getNumberOfPlayers() {
-        return this.players.size();
-    }
-
-
-    public void saveToJsonFile() {
-        try (Writer writer = new FileWriter(this.path)) {
-            Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).setPrettyPrinting().create();
-            gson.toJson(this.players, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private ArrayList<Player> readFromJsonFile() {
-        File file = new File(this.path);
-        if (file.exists() && file.length() > 0) {
-            ArrayList<Player> players = new ArrayList<>();
-            try (Reader reader = new FileReader(this.path)) {
-                Type type = new TypeToken<ArrayList<Player>>() {
-                }.getType();
-                Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                        .create();
-                players = gson.fromJson(reader, type);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return players;
-        } else return new ArrayList<Player>();
-    }
-
-    public static class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
-        private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        @Override
-        public JsonElement serialize(LocalDate date, Type type, JsonSerializationContext context) {
-            return new JsonPrimitive(DATE_FORMATTER.format(date));
-        }
-
-        @Override
-        public LocalDate deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-            return LocalDate.parse(element.getAsString(), DATE_FORMATTER);
-        }
+    public void saveGame() {
+        save.saveToJsonFile(players);
     }
 }

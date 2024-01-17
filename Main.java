@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         Players players = new Players("players.json");
         while (true) {
             Player player = null;
@@ -11,7 +11,7 @@ public class Main {
                 player = playerSelect(players.getPlayers());
                 if (player == null) {
                     playerCreate(players);
-                    players.saveToJsonFile();
+                    players.saveGame();
                 }
             }
             System.out.println("Player selected : " + player.getName());
@@ -20,7 +20,7 @@ public class Main {
                 game = gameSelect(player.getGames());
                 if (game == null) {
                     gameCreate(players, player);
-                    players.saveToJsonFile();
+                    players.saveGame();
                 }
             }
             System.out.println("Game selected : " + game.getName());
@@ -62,7 +62,7 @@ public class Main {
                         map.reveal(x, y, game);
                     }
                     game.computeScore();
-                    players.saveToJsonFile();
+                    players.saveGame();
                 }
             }
             timer.stop();
@@ -70,12 +70,12 @@ public class Main {
                 map.print();
                 System.out.println("You " + game.getStatus() + "!");
             } else System.out.println("Game saved.");
-
-            players.saveToJsonFile();
+            players.saveGame();
         }
     }
 
     private static Player playerSelect(ArrayList<Player> players) {
+        if (players == null) throw new NullPointerException("Invalid creation or read of file");
         if (players.isEmpty()) {
             System.out.println("No players created");
             return null;
@@ -101,6 +101,7 @@ public class Main {
     }
 
     private static Game gameSelect(ArrayList<Game> games) {
+        if (games == null) throw new NullPointerException("Invalid creation or read of file");
         if (games.isEmpty()) {
             System.out.println("No games created for this player");
             return null;
