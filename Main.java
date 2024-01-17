@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main{
-    public static void main(String[] args){
+
+public class Main {
+    public static void main(String[] args) throws Exception{
         Players players = new Players("players.json");
         while (true) {
             Player player = null;
