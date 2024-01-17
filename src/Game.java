@@ -11,6 +11,7 @@ public class Game {
     private GameDifficulty difficulty;
     private GameStatus status;
 
+
     public Game(String name, GameDifficulty difficulty) {
         this.name = name;
         this.score = 0;
@@ -41,6 +42,17 @@ public class Game {
                 this.map = new Map(size, size, this.minesCount);
                 break;
         }
+    }
+
+    public Game(String name, int size, int minesCount) {
+        this.name = name;
+        this.score = 0;
+        this.difficulty = GameDifficulty.PERSONALISED;
+        this.date = LocalDate.now();
+        this.status = GameStatus.WAITING;
+        this.timer = new Timer();
+        this.minesCount = minesCount;
+        this.map = new Map(size, size, this.minesCount);
     }
 
     public String getName() {

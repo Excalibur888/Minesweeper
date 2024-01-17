@@ -9,7 +9,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main extends Application {
 
@@ -277,49 +276,64 @@ public class Main extends Application {
         Text addGameText = new Text("Set game difficulty :");
         addGameText.setFont(new Font(20));
         difficultySelect.getChildren().add(addGameText);
-        for (GameDifficulty difficulty : GameDifficulty.values()) {
-            Button gameButton = new Button(difficulty.toString());
-            gameButton.setOnAction(e -> {
-                player.createGame(name, difficulty);
+
+        Button easyButton = new Button("Easy");
+        easyButton.setOnAction(e -> {
+            player.addGame(new Game(name, GameDifficulty.EASY));
+            players.saveGame();
+            VBox selectGame = gameSelectMenu(primaryStage, players, player);
+            Scene selectGameScene = new Scene(selectGame, 400, 400);
+            primaryStage.setScene(selectGameScene);
+        });
+
+        Button nomalButton = new Button("Normal");
+        nomalButton.setOnAction(e -> {
+            player.addGame(new Game(name, GameDifficulty.NORMAL));
+            players.saveGame();
+            VBox selectGame = gameSelectMenu(primaryStage, players, player);
+            Scene selectGameScene = new Scene(selectGame, 400, 400);
+            primaryStage.setScene(selectGameScene);
+        });
+
+        Button hardButton = new Button("Hard");
+        hardButton.setOnAction(e -> {
+            player.addGame(new Game(name, GameDifficulty.HARD));
+            players.saveGame();
+            VBox selectGame = gameSelectMenu(primaryStage, players, player);
+            Scene selectGameScene = new Scene(selectGame, 400, 400);
+            primaryStage.setScene(selectGameScene);
+        });
+
+
+        Button personalisedButton = new Button("Personalised");
+        TextField sizeField = new TextField();
+        sizeField.setPromptText("Grid size");
+        TextField mineCountField = new TextField();
+        mineCountField.setPromptText("Number of mines");
+        personalisedButton.setOnAction(e -> {
+            String size = sizeField.getText();
+            String mineCount = mineCountField.getText();
+            if (!size.isEmpty() && isInteger(size) && !mineCount.isEmpty() && isInteger(mineCount) && Integer.parseInt(mineCount) <= (Integer.parseInt(size)*Integer.parseInt(size))) {
+                player.addGame(new Game(name, Integer.parseInt(size), Integer.parseInt(mineCount)));
                 players.saveGame();
                 VBox selectGame = gameSelectMenu(primaryStage, players, player);
                 Scene selectGameScene = new Scene(selectGame, 400, 400);
                 primaryStage.setScene(selectGameScene);
-            });
-            difficultySelect.getChildren().add(gameButton);
-        }
+            }
+        });
+
+        difficultySelect.getChildren().addAll(easyButton, nomalButton, hardButton, personalisedButton, sizeField, mineCountField);
+
         return difficultySelect;
     }
-    
-    private static Game gameSelect(ArrayList<Game> games) {
-        if (games == null) throw new NullPointerException("Invalid creation or read of file");
-        if (games.isEmpty()) {
-            System.out.println("No games created for this player");
-            return null;
-        }
-        System.out.println("Select your game:\n");
-        System.out.println("id\t" + "name\t" + "date\t" + "difficulty\t" + "score");
-        Scanner input = new Scanner(System.in);
-        int i = 0;
-        System.out.println(i++ + ".\tcreate new game");
-        for (Game game : games) {
-            System.out.println(i++ + ".\t" + game.getName() + "\t" + game.getDate() + "\t" + game.getDifficulty() + "\t" + game.getScore());
 
+    private boolean isInteger(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
-        i = input.nextInt();
-        if (i == 0) return null;
-        return games.get(i - 1);
     }
 
-    private static void gameCreate(Players players, Player player) {
-        System.out.println("Chose a name for the game: ");
-        Scanner input = new Scanner(System.in);
-        String name = input.nextLine();
-        int i = 0;
-        for (GameDifficulty difficulty : GameDifficulty.values()) {
-            System.out.println(++i + ".\t" + difficulty);
-        }
-        GameDifficulty difficulty = GameDifficulty.values()[input.nextInt() - 1];
-        player.createGame(name, difficulty);
-    }
 }

@@ -49,14 +49,6 @@ public class Player {
         this.name = name;
     }
 
-    /**
-     * Set game list to the player.
-     *
-     * @param games game list to set.
-     */
-    public void setGames(final ArrayList<Game> games) {
-        this.games = games;
-    }
 
     /**
      * Create a new game.
@@ -79,6 +71,11 @@ public class Player {
             return game;
         }
         return null;
+    }
+
+    public void addGame(Game game){
+        this.games.add(game);
+        System.out.println("Game added.");
     }
 
     public void removeGame(String name) {
