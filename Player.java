@@ -4,7 +4,7 @@ public class Player {
     private String name;
     private ArrayList<Game> games;
 
-    public Player(final String name) {
+    public Player(String name) {
         this.name = name;
         this.games = new ArrayList<Game>();
     }
