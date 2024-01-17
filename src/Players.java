@@ -25,14 +25,16 @@ public class Players {
     }
 
     public void addPlayer(Player player) {
-        for (Player p : this.players) {
-            if (p.getName().equals(player.getName())) {
-                System.out.println("Error this name is already taken.");
-                return;
+        if (!player.getName().isEmpty()) {
+            for (Player p : this.players) {
+                if (p.getName().equals(player.getName())) {
+                    System.out.println("Error this name is already taken.");
+                    return;
+                }
             }
+            this.players.add(player);
+            System.out.println("Player added.");
         }
-        this.players.add(player);
-        System.out.println("Player added.");
     }
 
     public void removePlayer(String name) {

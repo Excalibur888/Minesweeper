@@ -66,27 +66,29 @@ public class Player {
      * @return the created game.
      */
     public Game createGame(final String name, final GameDifficulty difficulty) {
-        Game game = new Game(name, difficulty);
-        games.add(game);
-        System.out.println("Game created.");
-        return game;
-    }
-
-    /**
-     * Load a previous game from the player.
-     *
-     * @param id game id from the game to load.
-     */
-    public Game loadGame(final int id) {
+        if (!name.isEmpty()) {
+            for (Game g : this.games) {
+                if (g.getName().equals(name)) {
+                    System.out.println("Error this name is already taken.");
+                    return null;
+                }
+            }
+            Game game = new Game(name, difficulty);
+            this.games.add(game);
+            System.out.println("Game added.");
+            return game;
+        }
         return null;
     }
 
-    /**
-     * Save a game to the player.
-     *
-     * @param game game to save.
-     */
-    public void saveGame(final Game game) {
-
+    public void removeGame(String name) {
+        for (Game g : this.games) {
+            if (g.getName().equals(name)) {
+                this.games.remove(g);
+                System.out.println("Game removed.");
+                return;
+            }
+        }
+        System.out.println("Error this game does not exist.");
     }
 }
