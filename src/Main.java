@@ -45,56 +45,6 @@ public class Main extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-        /*
-            System.out.println("Game selected : " + game.getName());
-
-            Map map = game.getMap();
-            Timer timer = game.getTimer();
-            if (game.getStatus() == GameStatus.WAITING) {
-                game.setStatus(GameStatus.RUNNING);
-                timer.start();
-                while (game.getStatus() == GameStatus.RUNNING) {
-                    map.print();
-                    Scanner input = new Scanner(System.in);
-                    String choice = "";
-                    while (!choice.equals("F") && !choice.equals("R") && !choice.equals("P")) {
-                        timer.display();
-                        System.out.println("Enter [F-R-P]:");
-                        choice = input.nextLine();
-                    }
-                    int x, y;
-                    if (choice.equals("P")) {
-                        game.setStatus(GameStatus.WAITING);
-                        System.out.println("1. Exit\n2. Continue");
-                        x = input.nextInt();
-                        if (x == 1) break;
-                        game.setStatus(GameStatus.RUNNING);
-                        timer.start();
-                        continue;
-                    }
-                    if (choice.equals("F")) {
-                        System.out.println("Enter coordinates:");
-                        x = input.nextInt();
-                        y = input.nextInt();
-                        map.mark(x, y);
-                    }
-                    if (choice.equals("R")) {
-                        System.out.println("Enter coordinates:");
-                        x = input.nextInt();
-                        y = input.nextInt();
-                        map.reveal(x, y, game);
-                    }
-                    game.computeScore();
-                    players.saveGame();
-                }
-            }
-            timer.stop();
-            if (game.getStatus() != GameStatus.WAITING) {
-                map.print();
-                System.out.println("You " + game.getStatus() + "!");
-            } else System.out.println("Game saved.");
-            players.saveGame();
-        }*/
     }
 
     /**
