@@ -22,16 +22,16 @@ public class Game {
 
         switch (this.difficulty) {
             case GameDifficulty.EASY:
-                this.minesCount = 10;
-                this.map = new Map(10, 10, this.minesCount);
+                this.minesCount = 5;
+                this.map = new Map(5, 5, this.minesCount);
                 break;
             case GameDifficulty.NORMAL:
-                this.minesCount = 40;
-                this.map = new Map(20, 20, this.minesCount);
+                this.minesCount = 20;
+                this.map = new Map(10, 10, this.minesCount);
                 break;
             case GameDifficulty.HARD:
-                this.minesCount = 99;
-                this.map = new Map(30, 30, this.minesCount);
+                this.minesCount = 80;
+                this.map = new Map(20, 20, this.minesCount);
                 break;
             case GameDifficulty.PERSONALISED:
                 System.out.println("Enter the map size :\n");

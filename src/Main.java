@@ -1,11 +1,12 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -17,10 +18,22 @@ public class Main extends Application {
     private Player player = null;
     private Game game = null;
 
+    private Background background;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Minesweeper");
+
+        Image image = new Image("https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Dforest&psig=AOvVaw2WYInXhC2f-J_UngShsyUf&ust=1705682466742000&source=images&cd=vfe&ved=0CBIQjRxqFwoTCODey8Kw54MDFQAAAAAdAAAAABAE");
+        BackgroundImage backgroundImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+
+        this.background = new Background(backgroundImage);
 
         Players players = new Players("players.json");
         ArrayList<Player> playersList = players.getPlayers();
@@ -303,7 +316,7 @@ public class Main extends Application {
             this.primaryStage.setScene(selectGameMenu(players));
         });
 
-        GridPane grid = new GridPane(1, 1);
+        GridPane grid = new GridPane();
 
         if (this.game.getStatus() == GameStatus.WAITING) {
             this.game.setStatus(GameStatus.RUNNING);
@@ -337,20 +350,27 @@ public class Main extends Application {
         for (int i = 0; i < map.getHeight(); i++) {
             for (int j = 0; j < map.getWidth(); j++) {
                 curBox curBox = new curBox(map.getBoxes(i, j), i, j);
-                Button box = new Button("\uD83D\uDFE9");
-                box.setPrefSize(2, 2);
+                Button box = new Button();
+                box.setAlignment(Pos.CENTER);
+                box.setStyle("-fx-background-color: #21d111; -fx-border-width: 4px; -fx-border-color: #128508;");
                 if (curBox.box.isRevealed()) {
                     if (curBox.box.getType() == BoxType.INDICATION) {
                         box = new Button(Integer.toString(curBox.box.getAdjacentMineCount()));
+                        box.setStyle("-fx-background-color: #9c5a00; -fx-border-width: 4px; -fx-border-color: #7c4801; -fx-text-fill: white;");
                     } else if (curBox.box.getType() == BoxType.MINE) {
                         box = new Button("\uD83D\uDCA3");
+                        box.setStyle("-fx-background-color: #9c5a00; -fx-border-width: 4px; -fx-border-color: #7c4801;");
                     } else {
-                        box = new Button("\uD83D\uDFEB");
+                        box = new Button();
+                        box.setStyle("-fx-background-color: #9c5a00; -fx-border-width: 4px; -fx-border-color: #7c4801;");
                     }
                 } else if (curBox.box.isMarked()) {
                     box = new Button("\uD83D\uDEA9");
+                    box.setStyle("-fx-background-color: #21d111; -fx-border-width: 4px; -fx-border-color: #128508;");
                 }
-                box.setMinSize(40, 40);
+                box.setPadding(new Insets(0));
+                box.setMinSize(30, 30);
+                box.setMaxSize(30, 30);
                 box.setOnMouseClicked(e -> {
                     MouseButton button = e.getButton();
                     if (button == MouseButton.PRIMARY) {
