@@ -2,11 +2,21 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The Players class manages a collection of Player objects and provides methods for adding, removing, and retrieving players.
+ * It also uses DataSavingUtils for saving player data to a file.
+ */
 public class Players {
     DataSavingUtils save;
-
     private ArrayList<Player> players;
 
+    /**
+     * Constructs a Players object with the specified file path.
+     * If the file doesn't exist, a new player file is created.
+     * If the file exists, player data is loaded from the file.
+     *
+     * @param path The file path for storing player data.
+     */
     public Players(String path) {
         save = new DataSavingUtils(path);
         File file = new File(path);
@@ -24,6 +34,11 @@ public class Players {
         }
     }
 
+    /**
+     * Adds a new player to the list of players.
+     *
+     * @param player The Player object to be added.
+     */
     public void addPlayer(Player player) {
         if (!player.getName().isEmpty()) {
             for (Player p : this.players) {
@@ -39,6 +54,11 @@ public class Players {
         System.out.println("Error empty name.");
     }
 
+    /**
+     * Removes a player with the specified name from the list of players.
+     *
+     * @param name The name of the player to be removed.
+     */
     public void removePlayer(String name) {
         if (!name.isEmpty()) {
             for (Player p : this.players) {
@@ -54,10 +74,18 @@ public class Players {
         System.out.println("Error empty name.");
     }
 
+    /**
+     * Retrieves the list of players.
+     *
+     * @return The list of players.
+     */
     public ArrayList<Player> getPlayers() {
         return this.players;
     }
 
+    /**
+     * Saves the current state of player data to the file.
+     */
     public void saveGame() {
         save.saveToJsonFile(players);
     }

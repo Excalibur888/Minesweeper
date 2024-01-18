@@ -10,17 +10,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Locale;
 
-import static javafx.css.SizeUnits.MS;
-
+/**
+ * The main class for the Minesweeper.
+ */
 public class Main extends Application {
     private Stage primaryStage;
     private Player player = null;
@@ -41,6 +38,11 @@ public class Main extends Application {
         this.primaryStage.show();
     }
 
+    /**
+     * The entry point of the application.
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         launch(args);
         /*
@@ -95,6 +97,12 @@ public class Main extends Application {
         }*/
     }
 
+    /**
+     * Creates and displays the player selection menu.
+     *
+     * @param players The Players object containing player information.
+     * @return The Scene for the player selection menu.
+     */
     private Scene selectPlayerMenu(Players players) {
         VBox selectPlayer = new VBox(10);
         selectPlayer.setPadding(new Insets(10));
@@ -171,6 +179,12 @@ public class Main extends Application {
         return new Scene(selectPlayer, 800, 800);
     }
 
+    /**
+     * Displays the menu for adding a new player.
+     *
+     * @param addPlayer The VBox for adding a player.
+     * @param players   The Players object containing player information.
+     */
     private void addPlayerMenu(VBox addPlayer, Players players) {
         Text addPlayerText = new Text("Enter new player name :");
         addPlayerText.setStyle(this.defaultTextStyle);
@@ -191,6 +205,12 @@ public class Main extends Application {
         addPlayer.setStyle(this.defaultBoxStyle);
     }
 
+    /**
+     * Displays the menu for removing a player.
+     *
+     * @param removePlayer The VBox for removing a player.
+     * @param players      The Players object containing player information.
+     */
     private void removePlayerMenu(VBox removePlayer, Players players) {
         Text removePlayersText = new Text("Which player do you want to remove ?");
         removePlayersText.setStyle(this.defaultTextStyle);
@@ -212,6 +232,12 @@ public class Main extends Application {
         removePlayer.setStyle(this.defaultBoxStyle);
     }
 
+    /**
+     * Displays the menu for selecting a game after selecting a player.
+     *
+     * @param players The Players object containing player information.
+     * @return The Scene for selecting a game.
+     */
     private Scene selectGameMenu(Players players) {
         VBox selectGame = new VBox(10);
         selectGame.setPadding(new Insets(10));
@@ -307,6 +333,12 @@ public class Main extends Application {
         return new Scene(selectGame, 800, 800);
     }
 
+    /**
+     * Displays the menu for adding a new game.
+     *
+     * @param addGame The VBox for adding a game.
+     * @param players The Players object containing player information.
+     */
     private void addGameMenu(VBox addGame, Players players) {
         Button changePlayerButton = new Button("Change player");
         changePlayerButton.setStyle(this.defaultButtonStyle);
@@ -329,6 +361,12 @@ public class Main extends Application {
 
     }
 
+    /**
+     * Displays the menu for removing a game.
+     *
+     * @param removeGame The VBox for removing a game.
+     * @param players    The Players object containing player information.
+     */
     private void removeGameMenu(VBox removeGame, Players players) {
         Text removeGameText = new Text("Which game do you want to remove ?");
         removeGameText.setStyle(this.defaultTextStyle);
@@ -348,6 +386,13 @@ public class Main extends Application {
         removeGame.setStyle(this.defaultBoxStyle);
     }
 
+    /**
+     * Displays the menu for selecting game difficulty.
+     *
+     * @param selectDifficulty The VBox for selecting difficulty.
+     * @param players          The Players object containing player information.
+     * @param name             The name of the new game.
+     */
     private void selectDifficultyMenu(VBox selectDifficulty, Players players, String name) {
         Text selectDifficultyText = new Text("Set game difficulty :");
         selectDifficultyText.setStyle(this.defaultTextStyle);
@@ -397,6 +442,12 @@ public class Main extends Application {
         selectDifficulty.setStyle(this.defaultBoxStyle);
     }
 
+    /**
+     * Displays the main game screen.
+     *
+     * @param players The Players object containing player information.
+     * @return The Scene for the game screen.
+     */
     public Scene showGame(Players players) {
         VBox showGame = new VBox(10);
         showGame.setPadding(new Insets(10));
@@ -441,6 +492,12 @@ public class Main extends Application {
         return new Scene(showGame, 800, 800);
     }
 
+    /**
+     * Updates the game grid based on the current game state.
+     *
+     * @param players The Players object containing player information.
+     * @param grid    The GridPane representing the game grid.
+     */
     public void updateGrid(Players players, GridPane grid) {
         Map map = this.game.getMap();
         for (int i = 0; i < map.getHeight(); i++) {
@@ -487,7 +544,12 @@ public class Main extends Application {
         }
     }
 
-
+    /**
+     * Checks if a given string can be converted to an integer.
+     *
+     * @param input The input string to check.
+     * @return True if the input is a valid integer, false otherwise.
+     */
     private boolean isInteger(String input) {
         try {
             Integer.parseInt(input);

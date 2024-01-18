@@ -1,15 +1,14 @@
+/**
+ * Represents a single cell (box) in the Minesweeper game grid.
+ */
 public class Box {
-
     private boolean marked;
-
     private boolean revealed;
-
     private int adjacentMineCount;
-
     private BoxType type;
 
     /**
-     * Create a box with default values.
+     * Constructs a new Box with default values.
      */
     public Box() {
         this.marked = false;
@@ -19,66 +18,68 @@ public class Box {
     }
 
     /**
-     * set the box as revealed.
+     * Reveals the content of the box.
      */
     public void reveal() {
         this.revealed = true;
     }
 
     /**
-     * Return the box's mark status.
+     * Checks if the box is marked.
      *
-     * @return true if the box is marked, false otherwise.
+     * @return True if the box is marked, false otherwise.
      */
     public boolean isMarked() {
         return this.marked;
     }
 
     /**
-     * Return the box's reveal status.
+     * Checks if the box is revealed.
      *
-     * @return true if the box is revealed, false otherwise.
+     * @return True if the box is revealed, false otherwise.
      */
     public boolean isRevealed() {
         return this.revealed;
     }
 
     /**
-     * Set the box's mark status.
+     * Sets the mark status of the box.
      *
-     * @param toMark true if the box is marked, false otherwise.
+     * @param toMark True to mark the box, false to unmark.
      */
     public void mark(final boolean toMark) {
         this.marked = toMark;
     }
 
     /**
-     * Add 1 mine to the indicator.
+     * Increments the count of adjacent mines for the box.
      */
     public void addMine() {
         this.adjacentMineCount++;
     }
 
     /**
-     * Return the number of mines around the indicator.
+     * Gets the count of adjacent mines for the box.
      *
-     * @return number of mines around the indicator.
+     * @return The count of adjacent mines.
      */
     public int getAdjacentMineCount() {
         return this.adjacentMineCount;
     }
 
     /**
-     * Return the box's type.
-     * @return box's type.
+     * Gets the type of the box.
+     *
+     * @return The type of the box (EMPTY, MINE, INDICATION).
      */
     public BoxType getType() {
         return this.type;
     }
 
     /**
-     * Set the box's type.
-     * @param type box's type.
+     * Sets the type of the box.
+     *
+     * @param type The type of the box (EMPTY, MINE, INDICATION).
      */
     public void setType(final BoxType type) {
         this.type = type;

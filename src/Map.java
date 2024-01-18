@@ -1,3 +1,6 @@
+/**
+ * Class representing the game map in a Minesweeper game.
+ */
 public class Map {
     private final int height;
 
@@ -6,11 +9,11 @@ public class Map {
     private final Box[][] boxes;
 
     /**
-     * Create a map with the entered size and mine count.
+     * Constructs a map with a specified height, width, and mine count.
      *
-     * @param height    height of the map
-     * @param width     width of the map
-     * @param mineCount number of mines in the map
+     * @param height    The height of the map.
+     * @param width     The width of the map.
+     * @param mineCount The number of mines on the map.
      */
     public Map(final int height, final int width, final int mineCount) {
         // Initialize map
@@ -54,23 +57,40 @@ public class Map {
         }
     }
 
+    /**
+     * Gets the height of the map.
+     *
+     * @return The height of the map.
+     */
     public int getHeight() {
         return this.height;
     }
 
+    /**
+     * Gets the width of the map.
+     *
+     * @return The width of the map.
+     */
     public int getWidth() {
         return this.width;
     }
 
+    /**
+     * Gets the box at the specified position on the map.
+     *
+     * @param x The x-coordinate of the box.
+     * @param y The y-coordinate of the box.
+     * @return The box at the specified position.
+     */
     public Box getBoxes(int x, int y) {
         return boxes[x][y];
     }
 
     /**
-     * Mark if the box is not revealed, unmark if it is already marked.
+     * Marks or unmarks the box at the specified position.
      *
-     * @param x position x of the box to mark/unmark.
-     * @param y position y of the box to mark/unmark.
+     * @param x The x-coordinate of the box.
+     * @param y The y-coordinate of the box.
      */
     public void mark(final int x, final int y) {
         if (x < 0 || x >= this.height || y < 0 || y >= this.width) {
@@ -85,13 +105,11 @@ public class Map {
     }
 
     /**
-     * Reveal the box in entered position.
-     * If the box is empty, reveal adjacent boxes.
-     * If the box is a mine, reveal all boxes and end the game.
+     * Reveals the box at the specified position and updates the game status accordingly.
      *
-     * @param x    position x of the box to reveal
-     * @param y    position y of the box to reveal
-     * @param game game to check if the player win
+     * @param x    The x-coordinate of the box.
+     * @param y    The y-coordinate of the box.
+     * @param game The current game instance.
      */
     public void reveal(final int x, final int y, final Game game) {
         // Invalid position if the box is outside the map
@@ -129,12 +147,7 @@ public class Map {
     }
 
     /**
-     * Print the map in the console.
-     * X : box not revealed
-     * - : box revealed and empty
-     * F : box marked
-     * * : box revealed and mine
-     * 1-8 : box revealed and indication
+     * Prints the current state of the map, including revealed, marked, and unrevealed boxes.
      */
     public void print() {
         System.out.println();
@@ -159,9 +172,9 @@ public class Map {
     }
 
     /**
-     * Print the number (between 1 and 8) with emotes in the console.
+     * Prints numbers based on the adjacent mine count for a given box.
      *
-     * @param i number to print
+     * @param i The adjacent mine count.
      */
     public void printNumbers(final int i) {
         switch (i) {
@@ -196,9 +209,9 @@ public class Map {
     }
 
     /**
-     * Check if the player win.
+     * Checks if the player has won the game by revealing all non-mine boxes.
      *
-     * @param game game to check if the player win
+     * @param game The current game instance.
      */
     public void checkWin(final Game game) {
         // Win condition : all boxes revealed except mines.

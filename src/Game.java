@@ -1,6 +1,9 @@
 import java.time.LocalDate;
 import java.util.Scanner;
 
+/**
+ * Represents a Minesweeper game.
+ */
 public class Game {
     private String name;
     private int score;
@@ -11,7 +14,12 @@ public class Game {
     private GameDifficulty difficulty;
     private GameStatus status;
 
-
+    /**
+     * Constructs a new Minesweeper game with the specified name and difficulty.
+     *
+     * @param name       The name of the game.
+     * @param difficulty The difficulty level of the game.
+     */
     public Game(String name, GameDifficulty difficulty) {
         this.name = name;
         this.score = 0;
@@ -44,6 +52,13 @@ public class Game {
         }
     }
 
+    /**
+     * Constructs a new Minesweeper game with the specified name, size, and number of mines.
+     *
+     * @param name       The name of the game.
+     * @param size       The size of the game map.
+     * @param minesCount The number of mines in the game.
+     */
     public Game(String name, int size, int minesCount) {
         this.name = name;
         this.score = 0;
@@ -55,38 +70,82 @@ public class Game {
         this.map = new Map(size, size, this.minesCount);
     }
 
+    /**
+     * Gets the name of the game.
+     *
+     * @return The name of the game.
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Gets the score of the game.
+     *
+     * @return The score of the game.
+     */
     public int getScore() {
         return this.score;
     }
 
+    /**
+     * Gets the date when the game was played.
+     *
+     * @return The date of the game.
+     */
     public LocalDate getDate() {
         return this.date;
     }
 
+    /**
+     * Gets the map of the game.
+     *
+     * @return The map of the game.
+     */
     public Map getMap() {
         return this.map;
     }
 
+    /**
+     * Gets the timer used in the game.
+     *
+     * @return The timer of the game.
+     */
     public Timer getTimer() {
         return this.timer;
     }
 
+    /**
+     * Gets the difficulty level of the game.
+     *
+     * @return The difficulty level of the game.
+     */
     public GameDifficulty getDifficulty() {
         return this.difficulty;
     }
+
+    /**
+     * Gets the status of the game.
+     *
+     * @return The status of the game.
+     */
 
     public GameStatus getStatus() {
         return this.status;
     }
 
+    /**
+     * Sets the status of the game.
+     *
+     * @param status The status to set for the game.
+     */
     public void setStatus(GameStatus status) {
         this.status = status;
     }
 
+    /**
+     * Computes and increments the score of the game.
+     */
     public void computeScore() {
         this.score++;
     }

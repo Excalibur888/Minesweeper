@@ -74,6 +74,11 @@ public class Player {
         return null;
     }
 
+    /**
+     * Add an existing game to the player's list of games.
+     *
+     * @param newGame The game to be added.
+     */
     public void addGame(Game newGame) {
         if (!newGame.getName().isEmpty()) {
             for (Game game : this.games) {
@@ -89,6 +94,11 @@ public class Player {
         System.out.println("Error empty name.");
     }
 
+    /**
+     * Remove a game with the given name from the player's list of games.
+     *
+     * @param name The name of the game to be removed.
+     */
     public void removeGame(String name) {
         if (!name.isEmpty()) {
             for (Game g : this.games) {

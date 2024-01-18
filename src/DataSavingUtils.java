@@ -15,6 +15,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 
+/**
+ * Utility class for saving and reading data to/from JSON files with encryption.
+ */
 public class DataSavingUtils {
     private String filename;
 
@@ -23,10 +26,20 @@ public class DataSavingUtils {
     private static final String KEY_FACTORY = "PBKDF2WithHmacSHA256";
     private static final String SALT = "2947283829";
 
+    /**
+     * Constructs a DataSavingUtils object with the specified filename.
+     *
+     * @param filename The name of the file to save/read data.
+     */
     public DataSavingUtils(String filename) {
         this.filename = filename;
     }
 
+    /**
+     * Saves an object to a JSON file with encryption.
+     *
+     * @param o The object to be saved.
+     */
     public void saveToJsonFile(Object o) {
         try (Writer writer = new FileWriter(this.filename)) {
             Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).setPrettyPrinting().create();
@@ -38,6 +51,11 @@ public class DataSavingUtils {
         }
     }
 
+    /**
+     * Reads an ArrayList of Player objects from an encrypted JSON file.
+     *
+     * @return An ArrayList of Player objects.
+     */
     public ArrayList<Player> readFromJsonFile() {
         File file = new File(this.filename);
         if (file.exists() && file.length() > 0) {
@@ -53,9 +71,7 @@ public class DataSavingUtils {
 
                 Type type = new TypeToken<ArrayList<Player>>() {
                 }.getType();
-                Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                        .create();
+                Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
                 players = gson.fromJson(decryptedData, type);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -64,6 +80,9 @@ public class DataSavingUtils {
         } else return new ArrayList<Player>();
     }
 
+    /**
+     * Adapter class for serializing and deserializing LocalDate objects.
+     */
     public static class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
         private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -78,6 +97,12 @@ public class DataSavingUtils {
         }
     }
 
+    /**
+     * Encrypts data using AES/CBC/PKCS5Padding algorithm.
+     *
+     * @param data The data to be encrypted.
+     * @return The encrypted data as a Base64-encoded string.
+     */
     private String encrypt(String data) {
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance(KEY_FACTORY);
@@ -97,6 +122,12 @@ public class DataSavingUtils {
         return null;
     }
 
+    /**
+     * Decrypts encrypted data using AES/CBC/PKCS5Padding algorithm.
+     *
+     * @param encryptedData The encrypted data as a Base64-encoded string.
+     * @return The decrypted data.
+     */
     private String decrypt(String encryptedData) {
         try {
             String[] parts = encryptedData.split(":");
