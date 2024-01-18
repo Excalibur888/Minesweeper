@@ -3,6 +3,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -317,7 +318,14 @@ public class Main extends Application {
         timer.stop();
 
         if (game.getStatus() != GameStatus.WAITING) {
-            System.out.println("You " + game.getStatus() + "!");
+            Button exitButton = new Button("Exit");
+            exitButton.setOnAction(e -> {
+                this.primaryStage.setScene(selectGameMenu(players));
+            });
+            Text endStateText = new Text("You " + game.getStatus() + "!");
+            endStateText.setFont(new Font(20));
+            updateGrid(players, grid);
+            showGame.getChildren().setAll(exitButton, endStateText, grid);
         } else System.out.println("Game saved.");
         players.saveGame();
 
@@ -328,31 +336,42 @@ public class Main extends Application {
         Map map = this.game.getMap();
         for (int i = 0; i < map.getHeight(); i++) {
             for (int j = 0; j < map.getWidth(); j++) {
-                Box curBox = map.getBoxes(i, j);
+                curBox curBox = new curBox(map.getBoxes(i, j), i, j);
                 Button box = new Button("\uD83D\uDFE9");
                 box.setPrefSize(2, 2);
-                if (curBox.isRevealed()) {
-                    if (curBox.getType() == BoxType.INDICATION) {
-                        box = new Button(Integer.toString(curBox.getAdjacentMineCount()));
-                    } else if (curBox.getType() == BoxType.MINE) {
+                if (curBox.box.isRevealed()) {
+                    if (curBox.box.getType() == BoxType.INDICATION) {
+                        box = new Button(Integer.toString(curBox.box.getAdjacentMineCount()));
+                    } else if (curBox.box.getType() == BoxType.MINE) {
                         box = new Button("\uD83D\uDCA3");
                     } else {
                         box = new Button("\uD83D\uDFEB");
                     }
-                } else if (curBox.isMarked()) {
+                } else if (curBox.box.isMarked()) {
                     box = new Button("\uD83D\uDEA9");
                 }
                 box.setMinSize(40, 40);
-                box.setOnAction(e -> {
-                    curBox.reveal();
+                box.setOnMouseClicked(e -> {
+                    MouseButton button = e.getButton();
+                    if (button == MouseButton.PRIMARY) {
+                        map.reveal(curBox.x, curBox.y, this.game);
+                        players.saveGame();
+                        if (game.getStatus() == GameStatus.RUNNING) updateGrid(players, grid);
+                        else this.primaryStage.setScene(showGame(players));
+                    } else if (button == MouseButton.SECONDARY) {
+                        map.mark(curBox.x, curBox.y);
+                        updateGrid(players, grid);
+                    }
+
                     players.saveGame();
-                    if (game.getStatus() == GameStatus.RUNNING) updateGrid(players, grid);
-                    else this.primaryStage.setScene(showGame(players));
+                    updateGrid(players, grid);
                 });
                 grid.add(box, i, j);
             }
         }
     }
+
+
 
     private boolean isInteger(String input) {
         try {
