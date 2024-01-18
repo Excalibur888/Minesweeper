@@ -59,8 +59,8 @@ public class Player {
      */
     public Game createGame(final String name, final GameDifficulty difficulty) {
         if (!name.isEmpty()) {
-            for (Game g : this.games) {
-                if (g.getName().equals(name)) {
+            for (Game game : this.games) {
+                if (game.getName().equals(name)) {
                     System.out.println("Error this name is already taken.");
                     return null;
                 }
@@ -70,22 +70,37 @@ public class Player {
             System.out.println("Game added.");
             return game;
         }
+        System.out.println("Error empty name.");
         return null;
     }
 
-    public void addGame(Game game){
-        this.games.add(game);
-        System.out.println("Game added.");
+    public void addGame(Game newGame) {
+        if (!newGame.getName().isEmpty()) {
+            for (Game game : this.games) {
+                if (game.getName().equals(newGame.getName())) {
+                    System.out.println("Error this name is already taken.");
+                    return;
+                }
+            }
+            this.games.add(newGame);
+            System.out.println("Game added.");
+            return;
+        }
+        System.out.println("Error empty name.");
     }
 
     public void removeGame(String name) {
-        for (Game g : this.games) {
-            if (g.getName().equals(name)) {
-                this.games.remove(g);
-                System.out.println("Game removed.");
-                return;
+        if (!name.isEmpty()) {
+            for (Game g : this.games) {
+                if (g.getName().equals(name)) {
+                    this.games.remove(g);
+                    System.out.println("Game removed.");
+                    return;
+                }
             }
+            System.out.println("Error this game does not exist.");
+            return;
         }
-        System.out.println("Error this game does not exist.");
+        System.out.println("Error empty name.");
     }
 }

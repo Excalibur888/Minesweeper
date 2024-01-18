@@ -1,5 +1,3 @@
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -10,32 +8,24 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 
 public class Main extends Application {
+    private Stage primaryStage;
+    private Player player = null;
+    private Game game = null;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Minesweeper");
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("Minesweeper");
 
         Players players = new Players("players.json");
         ArrayList<Player> playersList = players.getPlayers();
-        if (playersList == null) throw new NullPointerException("Invalid creation or read of file");
-        if (playersList.isEmpty()) {
-            VBox addPlayer = addPlayerMenu(primaryStage, players);
-            Scene scene = new Scene(addPlayer, 400, 400);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        }
-        VBox selectPlayer = selectPlayerMenu(primaryStage, players);
 
-        Scene scene = new Scene(selectPlayer, 400, 400);
-        primaryStage.setScene(scene);
-
-        primaryStage.show();
-
+        this.primaryStage.setScene(selectPlayerMenu(players));
+        this.primaryStage.show();
     }
 
     public static void main(String[] args) {
@@ -92,49 +82,43 @@ public class Main extends Application {
         }*/
     }
 
-    private VBox selectPlayerMenu(Stage primaryStage, Players players) {
-        VBox playerSelect = new VBox(10);
-        playerSelect.setPadding(new Insets(10));
+    private Scene selectPlayerMenu(Players players) {
+        VBox selectPlayer = new VBox(10);
+        selectPlayer.setPadding(new Insets(10));
 
         ArrayList<Player> playersList = players.getPlayers();
 
         if (playersList == null) throw new NullPointerException("Invalid creation or read of file");
-        if (playersList.isEmpty()) return addPlayerMenu(primaryStage, players);
-
+        if (playersList.isEmpty()) {
+            selectPlayer.getChildren().setAll(addPlayerMenu(players));
+            return new Scene(selectPlayer, 400, 400);
+        }
 
         Button addPlayerButton = new Button("Add Player");
-        addPlayerButton.setOnAction(e -> {
-            VBox addPlayer = addPlayerMenu(primaryStage, players);
-            Scene addPlayerScene = new Scene(addPlayer, 400, 400);
-            primaryStage.setScene(addPlayerScene);
-        });
+        addPlayerButton.setOnAction(e -> selectPlayer.getChildren().setAll(addPlayerMenu(players)));
+
         Button removePlayerButton = new Button("Remove Player");
-        removePlayerButton.setOnAction(e -> {
-            VBox removePlayer = removePlayerMenu(primaryStage, players);
-            Scene removePlayerScene = new Scene(removePlayer, 400, 400);
-            primaryStage.setScene(removePlayerScene);
-        });
+        removePlayerButton.setOnAction(e -> selectPlayer.getChildren().setAll(removePlayerMenu(players)));
 
         Text selectPlayerText = new Text("Select your player :");
         selectPlayerText.setFont(new Font(20));
 
-        playerSelect.getChildren().addAll(addPlayerButton, removePlayerButton, selectPlayerText);
+        selectPlayer.getChildren().addAll(addPlayerButton, removePlayerButton, selectPlayerText);
         //System.out.println("id\t" + "name\t" + "level");
         for (Player player : playersList) {
             Button playerButton = new Button(player.getName() + "\t" + player.getLevel());
             playerButton.setOnAction(e -> {
-                VBox selectGame = selectGameMenu(primaryStage, players, player);
-                Scene selectGameScene = new Scene(selectGame, 400, 400);
-                primaryStage.setScene(selectGameScene);
+                this.player = player;
+                this.primaryStage.setScene(selectGameMenu(players));
             });
-            playerSelect.getChildren().add(playerButton);
+            selectPlayer.getChildren().add(playerButton);
         }
-        return playerSelect;
+        return new Scene(selectPlayer, 400, 400);
     }
 
-    private VBox addPlayerMenu(Stage primaryStage, Players players) {
-        VBox playerAdd = new VBox(10);
-        playerAdd.setPadding(new Insets(10));
+    private VBox addPlayerMenu(Players players) {
+        VBox addPlayer = new VBox(10);
+        addPlayer.setPadding(new Insets(10));
 
         Text addPlayerText = new Text("Enter new player name :");
         addPlayerText.setFont(new Font(20));
@@ -145,18 +129,16 @@ public class Main extends Application {
         newPlayerButton.setOnAction(e -> {
             players.addPlayer(new Player(newPlayerField.getText()));
             players.saveGame();
-            VBox selectPlayer = selectPlayerMenu(primaryStage, players);
-            Scene selectPlayerScene = new Scene(selectPlayer, 400, 400);
-            primaryStage.setScene(selectPlayerScene);
+            addPlayer.getChildren().setAll(selectPlayerMenu(players).getRoot());
         });
 
-        playerAdd.getChildren().addAll(addPlayerText, newPlayerField, newPlayerButton);
-        return playerAdd;
+        addPlayer.getChildren().addAll(addPlayerText, newPlayerField, newPlayerButton);
+        return addPlayer;
     }
 
-    private VBox removePlayerMenu(Stage primaryStage, Players players) {
-        VBox playerRemove = new VBox(10);
-        playerRemove.setPadding(new Insets(10));
+    private VBox removePlayerMenu(Players players) {
+        VBox removePlayer = new VBox(10);
+        removePlayer.setPadding(new Insets(10));
 
         Text removePlayersText = new Text("Which player do you want to remove ?");
         removePlayersText.setFont(new Font(20));
@@ -168,67 +150,62 @@ public class Main extends Application {
         oldPlayerButton.setOnAction(e -> {
             players.removePlayer(removePlayerField.getText());
             players.saveGame();
-            VBox selectPlayer = selectPlayerMenu(primaryStage, players);
-            Scene selectPlayerScene = new Scene(selectPlayer, 400, 400);
-            primaryStage.setScene(selectPlayerScene);
+            removePlayer.getChildren().setAll(selectPlayerMenu(players).getRoot());
+
         });
 
-        playerRemove.getChildren().addAll(removePlayersText, removePlayerField, oldPlayerButton);
-        return playerRemove;
+        removePlayer.getChildren().addAll(removePlayersText, removePlayerField, oldPlayerButton);
+        return removePlayer;
     }
 
-    private VBox selectGameMenu(Stage primaryStage, Players players, Player player) {
-        VBox gameSelect = new VBox(10);
-        gameSelect.setPadding(new Insets(10));
+    private Scene selectGameMenu(Players players) {
+        VBox selectGame = new VBox(10);
+        selectGame.setPadding(new Insets(10));
 
         ArrayList<Game> gamesList = player.getGames();
 
         if (gamesList == null) throw new NullPointerException("Invalid creation or read of file");
-        if (gamesList.isEmpty()) return addGameMenu(primaryStage, players, player);
+        if (gamesList.isEmpty()) {
+            selectGame.getChildren().setAll(addGameMenu(players));
+            return new Scene(selectGame, 400, 400);
+        }
 
         Button changePlayerButton = new Button("Change player");
         changePlayerButton.setOnAction(e -> {
-            VBox selectPlayer = selectPlayerMenu(primaryStage, players);
-            Scene selectPlayerScene = new Scene(selectPlayer, 400, 400);
-            primaryStage.setScene(selectPlayerScene);
+            this.player = null;
+            primaryStage.setScene(selectPlayerMenu(players));
         });
+
         Button addGameButton = new Button("Add Game");
-        addGameButton.setOnAction(e -> {
-            VBox addGame = addGameMenu(primaryStage, players, player);
-            Scene addGameScene = new Scene(addGame, 400, 400);
-            primaryStage.setScene(addGameScene);
-        });
+        addGameButton.setOnAction(e -> selectGame.getChildren().setAll(addGameMenu(players)));
+
         Button removeGameButton = new Button("Remove Game");
-        removeGameButton.setOnAction(e -> {
-            VBox removeGame = removeGameMenu(primaryStage, players, player);
-            Scene removeGameScene = new Scene(removeGame, 400, 400);
-            primaryStage.setScene(removeGameScene);
-        });
+        removeGameButton.setOnAction(e -> selectGame.getChildren().setAll(removeGameMenu(players)));
 
         Text selectGameText = new Text("Select your Game :");
         selectGameText.setFont(new Font(20));
 
-        gameSelect.getChildren().addAll(changePlayerButton, addGameButton, removeGameButton, selectGameText);
+        selectGame.getChildren().addAll(changePlayerButton, addGameButton, removeGameButton, selectGameText);
         //System.out.println("id\t" + "name\t" + "level");
         for (Game game : gamesList) {
             Button gameButton = new Button(game.getName() + "\t" + game.getDate() + "\t" + game.getDifficulty() + "\t" + game.getScore());
             gameButton.setOnAction(e -> {
-                showGame(primaryStage, players, game);
+                this.game = game;
+                this.primaryStage.setScene(showGame(players));
             });
-            gameSelect.getChildren().add(gameButton);
+            selectGame.getChildren().add(gameButton);
         }
-        return gameSelect;
+        return new Scene(selectGame, 400, 400);
     }
 
-    private VBox addGameMenu(Stage primaryStage, Players players, Player player) {
-        VBox gameAdd = new VBox(10);
-        gameAdd.setPadding(new Insets(10));
+    private VBox addGameMenu(Players players) {
+        VBox addGame = new VBox(10);
+        addGame.setPadding(new Insets(10));
 
         Button changePlayerButton = new Button("Change player");
         changePlayerButton.setOnAction(e -> {
-            VBox selectPlayer = selectPlayerMenu(primaryStage, players);
-            Scene selectPlayerScene = new Scene(selectPlayer, 400, 400);
-            primaryStage.setScene(selectPlayerScene);
+            this.player = null;
+            primaryStage.setScene(selectPlayerMenu(players));
         });
 
         Text addGameText = new Text("Enter new game name :");
@@ -238,19 +215,14 @@ public class Main extends Application {
 
         Button newGameButton = new Button("Create new game");
 
-        newGameButton.setOnAction(e -> {
-            VBox selectDifficulty = difficultySelectMenu(primaryStage, players, player, newGameField.getText());
-            Scene selectDifficultyScene = new Scene(selectDifficulty, 400, 400);
-            primaryStage.setScene(selectDifficultyScene);
-        });
-
-        gameAdd.getChildren().addAll(changePlayerButton, addGameText, newGameField, newGameButton);
-        return gameAdd;
+        newGameButton.setOnAction(e -> addGame.getChildren().setAll(selectDifficultyMenu(players, newGameField.getText())));
+        addGame.getChildren().addAll(changePlayerButton, addGameText, newGameField, newGameButton);
+        return addGame;
     }
 
-    private VBox removeGameMenu(Stage primaryStage, Players players, Player player) {
-        VBox gameRemove = new VBox(10);
-        gameRemove.setPadding(new Insets(10));
+    private VBox removeGameMenu(Players players) {
+        VBox removeGame = new VBox(10);
+        removeGame.setPadding(new Insets(10));
 
         Text removeGameText = new Text("Which game do you want to remove ?");
         removeGameText.setFont(new Font(20));
@@ -262,48 +234,40 @@ public class Main extends Application {
         oldGameButton.setOnAction(e -> {
             player.removeGame(removeGameField.getText());
             players.saveGame();
-            VBox selectGame = selectGameMenu(primaryStage, players, player);
-            Scene selectGameScene = new Scene(selectGame, 400, 400);
-            primaryStage.setScene(selectGameScene);
+            removeGame.getChildren().setAll(selectGameMenu(players).getRoot());
         });
 
-        gameRemove.getChildren().addAll(removeGameText, removeGameField, oldGameButton);
-        return gameRemove;
+        removeGame.getChildren().addAll(removeGameText, removeGameField, oldGameButton);
+        return removeGame;
     }
 
-    private VBox difficultySelectMenu(Stage primaryStage, Players players, Player player, String name) {
-        VBox difficultySelect = new VBox(10);
-        difficultySelect.setPadding(new Insets(10));
+    private VBox selectDifficultyMenu(Players players, String name) {
+        VBox selectDifficulty = new VBox(10);
+        selectDifficulty.setPadding(new Insets(10));
 
         Text addGameText = new Text("Set game difficulty :");
         addGameText.setFont(new Font(20));
-        difficultySelect.getChildren().add(addGameText);
+        selectDifficulty.getChildren().add(addGameText);
 
         Button easyButton = new Button("Easy");
         easyButton.setOnAction(e -> {
             player.addGame(new Game(name, GameDifficulty.EASY));
             players.saveGame();
-            VBox selectGame = selectGameMenu(primaryStage, players, player);
-            Scene selectGameScene = new Scene(selectGame, 400, 400);
-            primaryStage.setScene(selectGameScene);
+            selectDifficulty.getChildren().setAll(selectGameMenu(players).getRoot());
         });
 
         Button nomalButton = new Button("Normal");
         nomalButton.setOnAction(e -> {
             player.addGame(new Game(name, GameDifficulty.NORMAL));
             players.saveGame();
-            VBox selectGame = selectGameMenu(primaryStage, players, player);
-            Scene selectGameScene = new Scene(selectGame, 400, 400);
-            primaryStage.setScene(selectGameScene);
+            selectDifficulty.getChildren().setAll(selectGameMenu(players).getRoot());
         });
 
         Button hardButton = new Button("Hard");
         hardButton.setOnAction(e -> {
             player.addGame(new Game(name, GameDifficulty.HARD));
             players.saveGame();
-            VBox selectGame = selectGameMenu(primaryStage, players, player);
-            Scene selectGameScene = new Scene(selectGame, 400, 400);
-            primaryStage.setScene(selectGameScene);
+            selectDifficulty.getChildren().setAll(selectGameMenu(players).getRoot());
         });
 
 
@@ -318,65 +282,50 @@ public class Main extends Application {
             if (!size.isEmpty() && isInteger(size) && !mineCount.isEmpty() && isInteger(mineCount) && Integer.parseInt(mineCount) <= (Integer.parseInt(size) * Integer.parseInt(size))) {
                 player.addGame(new Game(name, Integer.parseInt(size), Integer.parseInt(mineCount)));
                 players.saveGame();
-                VBox selectGame = selectGameMenu(primaryStage, players, player);
-                Scene selectGameScene = new Scene(selectGame, 400, 400);
-                primaryStage.setScene(selectGameScene);
+                selectDifficulty.getChildren().setAll(selectGameMenu(players).getRoot());
             }
         });
 
-        difficultySelect.getChildren().addAll(easyButton, nomalButton, hardButton, personalisedButton, sizeField, mineCountField);
+        selectDifficulty.getChildren().addAll(easyButton, nomalButton, hardButton, personalisedButton, sizeField, mineCountField);
 
-        return difficultySelect;
+        return selectDifficulty;
     }
 
-    public void showGame(Stage primaryStage, Players players, Game game) {
-        VBox gameBoard = new VBox(10);
-        gameBoard.setPadding(new Insets(10));
+    public Scene showGame(Players players) {
+        VBox showGame = new VBox(10);
+        showGame.setPadding(new Insets(10));
+        Timer timer = this.game.getTimer();
+        Button pauseButton = new Button("Pause");
+        pauseButton.setOnAction(e -> {
+            timer.stop();
+            this.game.setStatus(GameStatus.WAITING);
+            this.primaryStage.setScene(selectGameMenu(players));
+        });
 
-        Map map = game.getMap();
-        Timer timer = game.getTimer();
-        if (game.getStatus() == GameStatus.WAITING) {
-            game.setStatus(GameStatus.RUNNING);
+        GridPane grid = new GridPane(1, 1);
+
+        if (this.game.getStatus() == GameStatus.WAITING) {
+            this.game.setStatus(GameStatus.RUNNING);
             timer.start();
-            GridPane grid = new GridPane(1, 1);
-            updateGrid(grid, map);
+            updateGrid(players, grid);
 
-            Button pauseButton = new Button("Pause");
-            pauseButton.setOnAction(e -> {
-                VBox selectPlayer = selectPlayerMenu(primaryStage, players);
-                Scene selectPlayerScene = new Scene(selectPlayer, 400, 400);
-                primaryStage.setScene(selectPlayerScene);
-            });
+            showGame.getChildren().addAll(pauseButton, grid);
 
-            gameBoard.getChildren().addAll(pauseButton, grid);
-            Scene scene = new Scene(gameBoard, 400, 400);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.seconds(1), event -> {
-                        game.computeScore();
-                        players.saveGame();
-                        updateGrid(grid, map);
-                    })
-            );
-            timeline.setCycleCount(Timeline.INDEFINITE);
-            timeline.play();
-
+            game.computeScore();
+            players.saveGame();
         }
-
         timer.stop();
+
         if (game.getStatus() != GameStatus.WAITING) {
-            map.print();
             System.out.println("You " + game.getStatus() + "!");
         } else System.out.println("Game saved.");
         players.saveGame();
 
-        Scene gameScene = new Scene(gameBoard, 400, 400);
-        primaryStage.setScene(gameScene);
+        return new Scene(showGame, 400, 400);
     }
 
-    public void updateGrid(GridPane grid, Map map) {
+    public void updateGrid(Players players, GridPane grid) {
+        Map map = this.game.getMap();
         for (int i = 0; i < map.getHeight(); i++) {
             for (int j = 0; j < map.getWidth(); j++) {
                 Box curBox = map.getBoxes(i, j);
@@ -393,6 +342,13 @@ public class Main extends Application {
                 } else if (curBox.isMarked()) {
                     box = new Button("\uD83D\uDEA9");
                 }
+                box.setMinSize(40, 40);
+                box.setOnAction(e -> {
+                    curBox.reveal();
+                    players.saveGame();
+                    if (game.getStatus() == GameStatus.RUNNING) updateGrid(players, grid);
+                    else this.primaryStage.setScene(showGame(players));
+                });
                 grid.add(box, i, j);
             }
         }

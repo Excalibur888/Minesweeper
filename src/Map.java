@@ -80,7 +80,7 @@ public class Map {
         if (this.boxes[x][y].isRevealed()) {
             System.out.println("Box already revealed");
         } else {
-            this.boxes[x][y].setMarked(!this.boxes[x][y].isMarked());
+            this.boxes[x][y].mark(!this.boxes[x][y].isMarked());
         }
     }
 

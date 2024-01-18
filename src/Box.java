@@ -48,7 +48,7 @@ public class Box {
      *
      * @param toMark true if the box is marked, false otherwise.
      */
-    public void setMarked(final boolean toMark) {
+    public void mark(final boolean toMark) {
         this.marked = toMark;
     }
 

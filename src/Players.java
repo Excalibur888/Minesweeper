@@ -34,18 +34,24 @@ public class Players {
             }
             this.players.add(player);
             System.out.println("Player added.");
+            return;
         }
+        System.out.println("Error empty name.");
     }
 
     public void removePlayer(String name) {
-        for (Player p : this.players) {
-            if (p.getName().equals(name)) {
-                this.players.remove(p);
-                System.out.println("Player removed.");
-                return;
+        if (!name.isEmpty()) {
+            for (Player p : this.players) {
+                if (p.getName().equals(name)) {
+                    this.players.remove(p);
+                    System.out.println("Player removed.");
+                    return;
+                }
             }
+            System.out.println("Error this player does not exist.");
+            return;
         }
-        System.out.println("Error this player does not exist.");
+        System.out.println("Error empty name.");
     }
 
     public ArrayList<Player> getPlayers() {
