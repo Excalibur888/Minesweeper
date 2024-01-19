@@ -258,7 +258,7 @@ public class Main extends Application {
             gameDateLabel.setMaxWidth(100);
             gameDateLabel.setTextFill(Color.WHITE);
             gameDateLabel.setAlignment(Pos.CENTER);
-            Label gameScoreLabel = new Label(game.getDate().toString());
+            Label gameScoreLabel = new Label(Integer.toString(game.getScore()));
             gameScoreLabel.setMinWidth(100);
             gameScoreLabel.setMaxWidth(100);
             gameScoreLabel.setTextFill(Color.WHITE);
