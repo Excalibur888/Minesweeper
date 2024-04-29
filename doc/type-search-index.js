@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"<Unnamed>","l":"Box"},{"p":"<Unnamed>","l":"BoxType"},{"p":"<Unnamed>","l":"curBox"},{"p":"<Unnamed>","l":"DataSavingUtils"},{"p":"<Unnamed>","l":"Game"},{"p":"<Unnamed>","l":"GameDifficulty"},{"p":"<Unnamed>","l":"GameStatus"},{"p":"<Unnamed>","l":"DataSavingUtils.LocalDateAdapter"},{"p":"<Unnamed>","l":"Main"},{"p":"<Unnamed>","l":"Map"},{"p":"<Unnamed>","l":"Player"},{"p":"<Unnamed>","l":"Players"},{"p":"<Unnamed>","l":"Timer"}];updateSearchResults();
+=======
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"<Unnamed>","l":"Box"},{"p":"<Unnamed>","l":"BoxType"},{"p":"<Unnamed>","l":"DataSavingUtils"},{"p":"<Unnamed>","l":"Game"},{"p":"<Unnamed>","l":"GameDifficulty"},{"p":"<Unnamed>","l":"GameStatus"},{"p":"<Unnamed>","l":"DataSavingUtils.LocalDateAdapter"},{"p":"<Unnamed>","l":"Main"},{"p":"<Unnamed>","l":"Map"},{"p":"<Unnamed>","l":"Player"},{"p":"<Unnamed>","l":"Players"},{"p":"<Unnamed>","l":"Timer"}];updateSearchResults();
+>>>>>>> 807a338ff1c129aececce7c3901ac79c8966ad8f
